@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{595D1EEC-F088-485C-AC88-727C3AD4817C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{931B7A61-696B-41B0-84FE-0FEF7A5DFB23}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chip8.Net", "src\Chip8.Net\Chip8.Net.csproj", "{08A2D10B-FBC4-4CAD-B937-512A1D33A9EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chip8.Net.Test", "tests\Chip8.Net.Test\Chip8.Net.Test.csproj", "{41ADE00B-DA19-41FE-8789-AEF1A898EFD2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{08A2D10B-FBC4-4CAD-B937-512A1D33A9EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08A2D10B-FBC4-4CAD-B937-512A1D33A9EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08A2D10B-FBC4-4CAD-B937-512A1D33A9EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08A2D10B-FBC4-4CAD-B937-512A1D33A9EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41ADE00B-DA19-41FE-8789-AEF1A898EFD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41ADE00B-DA19-41FE-8789-AEF1A898EFD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41ADE00B-DA19-41FE-8789-AEF1A898EFD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41ADE00B-DA19-41FE-8789-AEF1A898EFD2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{08A2D10B-FBC4-4CAD-B937-512A1D33A9EE} = {595D1EEC-F088-485C-AC88-727C3AD4817C}
+		{41ADE00B-DA19-41FE-8789-AEF1A898EFD2} = {931B7A61-696B-41B0-84FE-0FEF7A5DFB23}
+	EndGlobalSection
+EndGlobal
