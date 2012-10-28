@@ -4,7 +4,7 @@
 
     public class Memory
     {
-        private readonly byte[] memory = new byte[4096];
+        private readonly byte[] memory = new byte[0x1000];
 
         public byte this[int index]
         {
