@@ -1,4 +1,3 @@
-CHIP8.NET
-=========
+## CHIP8.NET
 
-Esse projeto se trata de um emulador do [CHIP8](http://en.wikipedia.org/wiki/CHIP-8) desenvolvido em C#.
+[CHIP8](http://en.wikipedia.org/wiki/CHIP-8) implemented in c#.   

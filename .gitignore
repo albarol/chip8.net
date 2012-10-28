@@ -21,3 +21,5 @@ src/GlobalInfo.cs
 *.cache
 NDependOut/
 *.ndproj
+*.DotSettings
+*.StyleCop
