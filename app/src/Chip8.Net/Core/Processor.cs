@@ -12,7 +12,5 @@
             this.programCounter = 0x200;
             this.registerV = new byte[16];
         }
-
-
     }
 }

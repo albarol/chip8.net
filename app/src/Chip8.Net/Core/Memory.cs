@@ -26,5 +26,13 @@
                 this.memory[index] = value;
             }
         }
+
+        public void Clear()
+        {
+            for (int position = 0x200; position <= 0xFFF; position++)
+            {
+                this.memory[position] = 0x0;
+            }
+        }
     }
 }

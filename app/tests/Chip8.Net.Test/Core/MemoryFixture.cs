@@ -1,5 +1,7 @@
 ﻿namespace Chip8.Net.Test.Core
 {
+    using System;
+
     using Chip8.Net.Core;
 
     using NUnit.Framework;
@@ -29,6 +31,17 @@
 
             // Assert:
             item.Should().Be.EqualTo((byte)0x000);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ThrowsExceptionWhenTryAccessInvalidPosition()
+        {
+            // Arrange:
+            const int Position = 0x000;
+            
+            // Act
+            var item = this.memory[Position];
         }
     }
 }
