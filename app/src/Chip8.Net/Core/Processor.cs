@@ -29,36 +29,43 @@
         {
             if (opcode == Instructions.ClearScreen)
             {
-                
+                return;
             }
-            else if (opcode == Instructions.CallRoutine)
+            else if (opcode == Instructions.ReturnRoutine)
             {
                 
             }
-            
-            switch (opcode & 0xF000)
+            else if ((opcode & 0xF000) == Instructions.JumpTo)
             {
-                case Instructions.JumpTo:
-                    this.JumpTo(opcode);
-                    break;
-                case Instructions.CallRoutine:
-                    this.CallRoutine(opcode);
-                    break;
-                case Instructions.SkipNextRegisterVxEqualAddress:
-                    this.SkipNextRegisterVxEqualAddress(opcode);
-                    break;
-                case Instructions.SkipNextRegisterVxNotEqualAddress:
-                    this.SkipNextRegisterVxNotEqualAddress(opcode);
-                    break;
-                case Instructions.SkipNextRegisterVxNotEqualVy:
-                    this.SkipNextRegisterVxNotEqualVy(opcode);
-                    break;
-                case Instructions.SetVxToNn:
-                    this.SetVxToNn(opcode);
-                    break;
-                case Instructions.AddNnToVx:
-                    this.AddNnToVx(opcode);
-                    break;
+                this.JumpTo(opcode);
+            }
+            else if ((opcode & 0xF000) == Instructions.CallRoutine)
+            {
+                this.CallRoutine(opcode);
+            }
+            else if ((opcode & 0xF000) == Instructions.SkipNextRegisterVxEqualAddress)
+            {
+                this.SkipNextRegisterVxEqualAddress(opcode);
+            }
+            else if ((opcode & 0xF000) == Instructions.SkipNextRegisterVxNotEqualAddress)
+            {
+                this.SkipNextRegisterVxNotEqualAddress(opcode);
+            }
+            else if ((opcode & 0xF000) == Instructions.SkipNextRegisterVxNotEqualVy)
+            {
+                this.SkipNextRegisterVxNotEqualVy(opcode);
+            }
+            else if ((opcode & 0xF000) == Instructions.SetVxToNn)
+            {
+                this.SetVxToNn(opcode);
+            }
+            else if ((opcode & 0xF000) == Instructions.AddNnToVx)
+            {
+                this.AddNnToVx(opcode);
+            }
+            else if ((opcode & 0xF000) == Instructions.SetVxToVy)
+            {
+                this.SetVxToVy(opcode);
             }
         }
 
@@ -120,6 +127,13 @@
             int position = opcode & 0x00FF;
             int register = (opcode & 0x0F00) >> 8;
             this.RegisterV[register] += position;
+        }
+
+        private void SetVxToVy(int opcode)
+        {
+            int positionX = (opcode & 0x0F00) >> 8;
+            int positionY = (opcode & 0x00F0) >> 4;
+            this.RegisterV[positionX] = this.RegisterV[positionY];
         }
     }
 }
