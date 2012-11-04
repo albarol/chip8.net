@@ -75,6 +75,10 @@
             {
                 this.SetVxToVxAndVy(opcode);
             }
+            else if ((opcode & 0xF00F) == Instructions.SetVxToVxXorVy)
+            {
+                this.SetVxToVxXorVy(opcode);
+            }
         }
 
         private void JumpTo(int opcode)
@@ -156,6 +160,13 @@
             int positionX = (opcode & 0x0F00) >> 8;
             int positionY = (opcode & 0x00F0) >> 4 & 0x0F;
             this.RegisterV[positionX] = this.RegisterV[positionX] & this.RegisterV[positionY];
+        }
+
+        private void SetVxToVxXorVy(int opcode)
+        {
+            int positionX = (opcode & 0x0F00) >> 8;
+            int positionY = (opcode & 0x00F0) >> 4 & 0x0F;
+            this.RegisterV[positionX] = this.RegisterV[positionX] ^ this.RegisterV[positionY];
         }
     }
 }

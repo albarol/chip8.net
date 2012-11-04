@@ -165,6 +165,21 @@
             this.processor.RegisterV[0x1].Should().Be.EqualTo(0x0020);
         }
 
+        [Test]
+        public void StepRun_SetVxToVxXorVy()
+        {
+            // Arrange:
+            this.processor.RegisterV[0x1] = 0x0020;
+            this.processor.RegisterV[0x2] = 0x0021;
+            this.processor.Memory[0x200] = 0x8123;
+
+            // Act: 
+            this.processor.StepRun();
+
+            // Assert:
+            this.processor.RegisterV[0x1].Should().Be.EqualTo(0x0001);
+        }
+
 
     }
 }
