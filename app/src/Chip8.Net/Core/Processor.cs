@@ -4,22 +4,28 @@
 
     public class Processor
     {
-        private Memory memory;
-        private byte[] registerV;
+        private readonly Stack stack;
 
-        private Stack stack;
-        
         public Processor()
         {
-            this.memory = new Memory();
+            this.Memory = new Memory();
             this.ProgramCounter = 0x200;
-            this.registerV = new byte[0xF];
+            this.RegisterV = new Register(0xF);
             this.stack = new Stack();
         }
 
-        public short ProgramCounter { get; private set; }
+        public Memory Memory { get; private set; }
+        public Register RegisterV { get; private set; }
 
-        public void InterpretOpcode(short opcode)
+        public int ProgramCounter { get; private set; }
+
+        public void StepRun()
+        {
+            var opcode = this.Memory[this.ProgramCounter];
+            this.InterpretOpcode(opcode);
+        }
+
+        private void InterpretOpcode(int opcode)
         {
             switch (opcode & 0xF000)
             {
@@ -29,33 +35,82 @@
                 case Instructions.CallRoutine:
                     this.CallRoutine(opcode);
                     break;
-                case Instructions.SkipNextRegisterEqualAddress:
-                    this.SkipNextRegisterEqualAddress(opcode);
+                case Instructions.SkipNextRegisterVxEqualAddress:
+                    this.SkipNextRegisterVxEqualAddress(opcode);
+                    break;
+                case Instructions.SkipNextRegisterVxNotEqualAddress:
+                    this.SkipNextRegisterVxNotEqualAddress(opcode);
+                    break;
+                case Instructions.SkipNextRegisterVxNotEqualVy:
+                    this.SkipNextRegisterVxNotEqualVy(opcode);
+                    break;
+                case Instructions.SetVxToNn:
+                    this.SetVxToNn(opcode);
+                    break;
+                case Instructions.AddNnToVx:
+                    this.AddNnToVx(opcode);
                     break;
             }
         }
 
-        private void JumpTo(short opcode)
+        private void JumpTo(int opcode)
         {
-            short address = Convert.ToInt16(opcode & 0x0FFF);
+            int address = opcode & 0x0FFF;
             this.ProgramCounter = address;
         }
 
-        private void CallRoutine(short opcode)
+        private void CallRoutine(int opcode)
         {
-            short address = Convert.ToInt16(opcode & 0x0FFF);
+            int address = opcode & 0x0FFF;
             this.stack.Push(this.ProgramCounter);
             this.ProgramCounter = address;
         }
 
-        private void SkipNextRegisterEqualAddress(short opcode)
+        private void SkipNextRegisterVxEqualAddress(int opcode)
         {
-            short register = Convert.ToInt16(opcode & 0x0F00);
-            short position = Convert.ToInt16(opcode & 0x00FF);
-            if (this.registerV[register] == position)
+            int position = opcode & 0x00FF;
+            int register = (opcode & 0x0F00) >> 8;
+            
+            if (this.RegisterV[register] == position)
             {
                 this.ProgramCounter += 0x2;
             }
+        }
+
+        private void SkipNextRegisterVxNotEqualAddress(int opcode)
+        {
+            int position = opcode & 0x00FF;
+            int register = (opcode & 0x0F00) >> 8;
+
+            if (this.RegisterV[register] != position)
+            {
+                this.ProgramCounter += 0x2;
+            }
+        }
+
+        private void SkipNextRegisterVxNotEqualVy(int opcode)
+        {
+            int positionX = (opcode & 0x0F00) >> 8;
+            int positionY = (opcode & 0x00F0) >> 4;
+
+            if (this.RegisterV[positionX] != this.RegisterV[positionY])
+            {
+                this.ProgramCounter += 0x2;
+            }
+        }
+
+        private void SetVxToNn(int opcode)
+        {
+            int position = opcode & 0x00FF;
+            int register = (opcode & 0x0F00) >> 8;
+            this.RegisterV[register] = position;
+        }
+
+        private void AddNnToVx(int opcode)
+        {
+            int position = opcode & 0x00FF;
+            int register = (opcode & 0x0F00) >> 8;
+            this.RegisterV[register] += position;
         }
     }
 }

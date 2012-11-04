@@ -2,16 +2,16 @@
 {
     public class Stack
     {
-        private readonly short[] stack;
+        private readonly int[] stack;
         private byte pointer;
         
         public Stack()
         {
             this.pointer = 0x0;
-            this.stack = new short[0x10];
+            this.stack = new int[0x10];
         }
 
-        public void Push(short opcode)
+        public void Push(int opcode)
         {
             this.stack[this.pointer] = opcode;
             ++this.pointer;

@@ -2,40 +2,41 @@
 {
     using System;
 
-    public class Memory
+    public class Register
     {
-        private readonly int[] memory = new int[0x1000];
+        private readonly int[] register;
 
-        internal Memory()
+        public Register(int size)
         {
+            this.register = new int[size];
         }
 
         public int this[int index]
         {
             get
             {
-                if (index < 0x200 || index > 0xFFF)
+                if (index < 0x0 || index > this.register.Length)
                 {
                     throw new ArgumentException("Invalid access memory");
                 }
 
-                return this.memory[index];
+                return this.register[index];
             }
             set
             {
-                if (index < 0x200 || index > 0xFFF)
+                if (index < 0x0 || index > this.register.Length)
                 {
                     throw new ArgumentException("Invalid access memory");
                 }
-                this.memory[index] = value;
+                this.register[index] = value;
             }
         }
 
         public void Clear()
         {
-            for (int position = 0x200; position <= 0xFFF; position++)
+            for (int position = 0x200; position <= this.register.Length; position++)
             {
-                this.memory[position] = 0x0;
+                this.register[position] = 0x0;
             }
         }
     }

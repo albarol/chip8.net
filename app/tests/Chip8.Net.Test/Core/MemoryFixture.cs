@@ -11,12 +11,12 @@
     [TestFixture]
     public class MemoryFixture
     {
-        private Memory memory;
+        private Processor processor;
 
         [SetUp]
         public void SetUp()
         {
-            this.memory = new Memory();
+            this.processor = new Processor();
         }
         
         [Test]
@@ -24,10 +24,10 @@
         {
             // Arrange:
             const int Position = 0x219;
-            this.memory[Position] = 0x000;
+            this.processor.Memory[Position] = 0x000;
             
             // Act:
-            var item = this.memory[Position];
+            var item = this.processor.Memory[Position];
 
             // Assert:
             item.Should().Be.EqualTo((byte)0x000);
@@ -41,7 +41,7 @@
             const int Position = 0x000;
             
             // Act
-            var item = this.memory[Position];
+            var item = this.processor.Memory[Position];
         }
     }
 }

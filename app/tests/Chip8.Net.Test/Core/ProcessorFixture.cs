@@ -20,42 +20,104 @@
         }
         
         [Test]
-        public void CanJumpToAddress()
+        public void StepRun_CanJumpToAddress()
         {
             // Arrange:
-            short opcode = 0x1219;
+            this.processor.Memory[0x200] = 0x1219;
 
             // Act:
-            this.processor.InterpretOpcode(opcode);
+            this.processor.StepRun();
 
             // Assert:
             this.processor.ProgramCounter.Should().Be.EqualTo(0x0219);
         }
 
         [Test]
-        public void CanCallSubroutine()
+        public void StepRun_CanCallSubroutine()
         {
             // Arrange:
-            short opcode = 0x204d;
+            this.processor.Memory[0x200] = 0x204d;
 
             // Act:
-            this.processor.InterpretOpcode(opcode);
+            this.processor.StepRun();
 
             // Assert:
             this.processor.ProgramCounter.Should().Be.EqualTo(0x004d);
         }
 
         [Test]
-        public void CanSkipNextFunctionIfVXEqualsNN()
+        public void StepRun_CanSkipNextFunctionIfVXEqualsNN()
         {
             // Arrange:
-            short opcode = 0x3160;
+            this.processor.RegisterV[0x1] = 0x0060;
+            this.processor.Memory[0x200] = 0x3160;
+            this.processor.Memory[0x201] = 0x0b61;
+            this.processor.Memory[0x202] = 0x1b22;
 
             // Act:
-            this.processor.InterpretOpcode(opcode);
+            this.processor.StepRun();
 
             // Assert:
-            this.processor.ProgramCounter.Should().Be.EqualTo(1);
+            this.processor.ProgramCounter.Should().Be.EqualTo(0x202);
+        }
+
+        [Test]
+        public void StepRun_CanSkipNextFunctionIfVXNotEqualsNN()
+        {
+            // Arrange:
+            this.processor.RegisterV[0x1] = 0x0010;
+            this.processor.Memory[0x200] = 0x4160;
+            this.processor.Memory[0x201] = 0x0b61;
+            this.processor.Memory[0x202] = 0x1b22;
+
+            // Act:
+            this.processor.StepRun();
+
+            // Assert:
+            this.processor.ProgramCounter.Should().Be.EqualTo(0x202);
+        }
+
+        [Test]
+        public void StepRun_CanSkipNextFunctionIfVXNotEqualsVy()
+        {
+            // Arrange:
+            this.processor.RegisterV[0x1] = 0x0010;
+            this.processor.RegisterV[0x2] = 0x0020;
+            this.processor.Memory[0x200] = 0x5120;
+
+            // Act:
+            this.processor.StepRun();
+
+            // Assert:
+            this.processor.ProgramCounter.Should().Be.EqualTo(0x202);
+        }
+
+        [Test]
+        public void StepRun_CanSetVxToNn()
+        {
+            // Arrange:
+            this.processor.RegisterV[0x1] = 0x0010;
+            this.processor.Memory[0x200] = 0x6122;
+
+            // Act:
+            this.processor.StepRun();
+
+            // Assert:
+            this.processor.RegisterV[0x1].Should().Be.EqualTo(0x0022);
+        }
+
+        [Test]
+        public void StepRun_CanAddNnToVx()
+        {
+            // Arrange:
+            this.processor.RegisterV[0x1] = 0x0010;
+            this.processor.Memory[0x200] = 0x7122;
+
+            // Act: 
+            this.processor.StepRun();
+
+            // Assert:
+            this.processor.RegisterV[0x1].Should().Be.EqualTo(0x0032);
         }
     }
 }
