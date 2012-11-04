@@ -12,5 +12,6 @@
         public const int SetVxToNn = 0x6000;
         public const int AddNnToVx = 0x7000;
         public const int SetVxToVy = 0x8000;
+        public const int SetVxToVxOrVy = 0x8001;
     }
 }
