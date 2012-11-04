@@ -10,7 +10,7 @@
         {
             this.Memory = new Memory();
             this.ProgramCounter = 0x200;
-            this.RegisterV = new Register(0xF);
+            this.RegisterV = new Register(0x10);
             this.stack = new Stack();
         }
 
@@ -78,6 +78,10 @@
             else if ((opcode & 0xF00F) == Instructions.SetVxToVxXorVy)
             {
                 this.SetVxToVxXorVy(opcode);
+            }
+            else if ((opcode & 0xF00F) == Instructions.AddVyToVx)
+            {
+                this.AddVyToVx(opcode);
             }
         }
 
@@ -167,6 +171,24 @@
             int positionX = (opcode & 0x0F00) >> 8;
             int positionY = (opcode & 0x00F0) >> 4 & 0x0F;
             this.RegisterV[positionX] = this.RegisterV[positionX] ^ this.RegisterV[positionY];
+        }
+
+        private void AddVyToVx(int opcode)
+        {
+            const int Carry = 0xF;
+            int positionX = (opcode & 0x0F00) >> 8;
+            int positionY = (opcode & 0x00F0) >> 4 & 0x0F;
+            
+            if (this.RegisterV[positionX] + this.RegisterV[positionY] > 0xFF)
+            {
+                this.RegisterV[Carry] = 0x1;
+            }
+            else
+            {
+                this.RegisterV[Carry] = 0x0;
+            }
+
+            this.RegisterV[positionX] = (this.RegisterV[positionX] + this.RegisterV[positionY]) & 0xFF;
         }
     }
 }

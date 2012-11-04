@@ -34,7 +34,7 @@
 
         public void Clear()
         {
-            for (int position = 0x200; position <= this.register.Length; position++)
+            for (int position = 0x0; position <= this.register.Length; position++)
             {
                 this.register[position] = 0x0;
             }
