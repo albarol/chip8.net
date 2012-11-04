@@ -27,6 +27,15 @@
 
         private void InterpretOpcode(int opcode)
         {
+            if (opcode == Instructions.ClearScreen)
+            {
+                
+            }
+            else if (opcode == Instructions.CallRoutine)
+            {
+                
+            }
+            
             switch (opcode & 0xF000)
             {
                 case Instructions.JumpTo:
