@@ -16,5 +16,6 @@
         public const int SetVxToVxAndVy = 0x8002;
         public const int SetVxToVxXorVy = 0x8003;
         public const int AddVyToVx = 0x8004;
+        public const int SubtractVyToVx = 0x8005;
     }
 }

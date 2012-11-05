@@ -1,7 +1,5 @@
 ﻿namespace Chip8.Net.Core
 {
-    using System;
-
     public class Processor
     {
         private readonly Stack stack;
@@ -82,6 +80,10 @@
             else if ((opcode & 0xF00F) == Instructions.AddVyToVx)
             {
                 this.AddVyToVx(opcode);
+            }
+            else if ((opcode & 0xF00F) == Instructions.SubtractVyToVx)
+            {
+                this.SubtractVyToVx(opcode);
             }
         }
 
@@ -190,5 +192,24 @@
 
             this.RegisterV[positionX] = (this.RegisterV[positionX] + this.RegisterV[positionY]) & 0xFF;
         }
+
+        private void SubtractVyToVx(int opcode)
+        {
+            const int Carry = 0xF;
+            int positionX = (opcode & 0x0F00) >> 8;
+            int positionY = (opcode & 0x00F0) >> 4 & 0x0F;
+            
+            if (this.RegisterV[positionX] > this.RegisterV[positionY])
+            {
+                this.RegisterV[Carry] = 0x1;
+            }
+            else
+            {
+                this.RegisterV[Carry] = 0x0;
+            }
+
+            this.RegisterV[positionX] = this.RegisterV[positionX] - this.RegisterV[positionY];
+        }
+        
     }
 }
