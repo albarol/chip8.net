@@ -18,5 +18,6 @@
         public const int AddVyToVx = 0x8004;
         public const int SubtractVyFromVx = 0x8005;
         public const int ShiftVxRightByOne = 0x8006;
+        public const int SetVxToVyMinusVx = 0x8007;
     }
 }

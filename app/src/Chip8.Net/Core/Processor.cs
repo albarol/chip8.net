@@ -89,6 +89,10 @@
             {
                 this.ShiftVxRightByOne(opcode);
             }
+            else if ((opcode & 0xF00F) == Instructions.SetVxToVyMinusVx)
+            {
+                this.SetVxToVyMinusVx(opcode);
+            }
         }
 
         private void JumpTo(int opcode)
@@ -206,6 +210,16 @@
 
             this.RegisterV[Carry] = (this.RegisterV[positionX] & 0x1) == 0x1 ? 0x1 : 0x0;
             this.RegisterV[positionX] = this.RegisterV[positionX] >> 0x1;
+        }
+
+        private void SetVxToVyMinusVx(int opcode)
+        {
+            const int Carry = 0xF;
+            int positionX = (opcode & 0x0F00) >> 8;
+            int positionY = (opcode & 0x00F0) >> 4;
+
+            this.RegisterV[Carry] = (this.RegisterV[positionY] >= this.RegisterV[positionX]) ? 0x1 : 0x0;
+            this.RegisterV[positionX] = this.RegisterV[positionY] - this.RegisterV[positionY];
         }
     }
 }

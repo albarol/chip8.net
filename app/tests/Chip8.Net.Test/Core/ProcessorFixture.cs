@@ -270,6 +270,35 @@
             this.processor.RegisterV[0xF].Should().Be.EqualTo(0x0);
         }
 
+        [Test]
+        public void StepRun_SubtractVxToVyWithCarry()
+        {
+            // Arrange:
+            this.processor.RegisterV[0x1] = 0xA0;
+            this.processor.RegisterV[0x2] = 0xF0;
+            this.processor.Memory[0x200] = 0x8127;
+
+            // Act: 
+            this.processor.StepRun();
+
+            // Assert:
+            this.processor.RegisterV[0xF].Should().Be.EqualTo(0x1);
+        }
+
+        [Test]
+        public void StepRun_SubtractVxToVyWithoutCarry()
+        {
+            // Arrange:
+            this.processor.RegisterV[0x1] = 0xF0;
+            this.processor.RegisterV[0x2] = 0xA0;
+            this.processor.Memory[0x200] = 0x8127;
+
+            // Act: 
+            this.processor.StepRun();
+
+            // Assert:
+            this.processor.RegisterV[0xF].Should().Be.EqualTo(0x0);
+        }
 
     }
 }
