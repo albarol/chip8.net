@@ -8,7 +8,7 @@
         public const int CallRoutine = 0x2000;
         public const int SkipNextRegisterVxEqualAddress = 0x3000;
         public const int SkipNextRegisterVxNotEqualAddress = 0x4000;
-        public const int SkipNextRegisterVxNotEqualVy = 0x5000;
+        public const int SkipNextRegisterVxEqualVy = 0x5000;
         public const int SetVxToNn = 0x6000;
         public const int AddNnToVx = 0x7000;
         public const int SetVxToVy = 0x8000;
@@ -20,5 +20,7 @@
         public const int ShiftVxRightByOne = 0x8006;
         public const int SetVxToVyMinusVx = 0x8007;
         public const int ShiftVxLeftByOne = 0x800E;
+        public const int SkipNextRegisterVxNotEqualVy = 0x9000;
+        
     }
 }

@@ -78,11 +78,11 @@
         }
 
         [Test]
-        public void StepRun_CanSkipNextFunctionIfVXNotEqualsVy()
+        public void StepRun_CanSkipNextFunctionIfVXEqualsVy()
         {
             // Arrange:
             this.processor.RegisterV[0x1] = 0x0010;
-            this.processor.RegisterV[0x2] = 0x0020;
+            this.processor.RegisterV[0x2] = 0x0010;
             this.processor.Memory[0x200] = 0x5120;
 
             // Act:
@@ -328,6 +328,21 @@
 
             // Assert:
             this.processor.RegisterV[0xF].Should().Be.EqualTo(0x0);
+        }
+
+        [Test]
+        public void StepRun_CanSkipNextFunctionIfVXNotEqualsVy()
+        {
+            // Arrange:
+            this.processor.RegisterV[0x1] = 0x0010;
+            this.processor.RegisterV[0x2] = 0x0020;
+            this.processor.Memory[0x200] = 0x9120;
+
+            // Act:
+            this.processor.StepRun();
+
+            // Assert:
+            this.processor.ProgramCounter.Should().Be.EqualTo(0x202);
         }
 
     }
