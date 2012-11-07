@@ -49,8 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\MemoryFixture.cs" />
-    <Compile Include="Core\ProcessorFixture.cs" />
+    <Compile Include="MemoryFixture.cs" />
+    <Compile Include="ProcessorFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -40,11 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\Instructions.cs" />
-    <Compile Include="Core\Memory.cs" />
-    <Compile Include="Core\Processor.cs" />
-    <Compile Include="Core\Register.cs" />
-    <Compile Include="Core\Stack.cs" />
+    <Compile Include="Gpu.cs" />
+    <Compile Include="Instructions.cs" />
+    <Compile Include="Memory.cs" />
+    <Compile Include="Processor.cs" />
+    <Compile Include="Register.cs" />
+    <Compile Include="Stack.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
