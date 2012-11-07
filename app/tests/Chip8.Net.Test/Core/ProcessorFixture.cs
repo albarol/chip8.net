@@ -358,5 +358,19 @@
             this.processor.RegisterI.Should().Be.EqualTo(0x0010);
         }
 
+        [Test]
+        public void StepRun_CanJumpToNnnPlusV0()
+        {
+            // Arrange:
+            this.processor.RegisterV[0x0] = 0x01;
+            this.processor.Memory[0x200] = 0xB010;
+
+            // Act:
+            this.processor.StepRun();
+
+            // Assert:
+            this.processor.ProgramCounter.Should().Be.EqualTo(0x0011);
+        }
+
     }
 }

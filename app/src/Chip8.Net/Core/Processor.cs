@@ -105,6 +105,10 @@
             {
                 this.SetIToAddressNnn(opcode);
             }
+            else if ((opcode & 0xF000) == Instructions.JumpToPlusV0)
+            {
+                this.JumpToPlusV0(opcode);
+            }
         }
 
         private void JumpTo(int opcode)
@@ -258,6 +262,12 @@
         {
             int place = opcode & 0x0FFF;
             this.RegisterI = place;
+        }
+
+        private void JumpToPlusV0(int opcode)
+        {
+            int place = opcode & 0x0FFF;
+            this.ProgramCounter = place + this.RegisterV[0x0];
         }
     }
 }
