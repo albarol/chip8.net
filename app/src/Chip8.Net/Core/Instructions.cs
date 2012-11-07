@@ -23,5 +23,6 @@
         public const int SkipNextRegisterVxNotEqualVy = 0x9000;
         public const int SetIToAddressNnn = 0xA000;
         public const int JumpToPlusV0 = 0xB000;
+        public const int SetVxRandomNumberAndNn = 0xC000;
     }
 }

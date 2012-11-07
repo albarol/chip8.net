@@ -1,5 +1,7 @@
 ﻿namespace Chip8.Net.Core
 {
+    using System;
+
     public class Processor
     {
         public Processor()
@@ -108,6 +110,10 @@
             else if ((opcode & 0xF000) == Instructions.JumpToPlusV0)
             {
                 this.JumpToPlusV0(opcode);
+            }
+            else if ((opcode & 0xF000) == Instructions.SetVxRandomNumberAndNn)
+            {
+                this.SetVxRandomNumberAndNn(opcode);
             }
         }
 
@@ -268,6 +274,14 @@
         {
             int place = opcode & 0x0FFF;
             this.ProgramCounter = place + this.RegisterV[0x0];
+        }
+
+        private void SetVxRandomNumberAndNn(int opcode)
+        {
+            var rnd = new Random();
+            int positionX = (opcode & 0x0F00) >> 8;
+            int place = opcode & 0x00FF;
+            this.RegisterV[positionX] = rnd.Next(0x100) & place;
         }
     }
 }

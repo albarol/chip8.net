@@ -372,5 +372,19 @@
             this.processor.ProgramCounter.Should().Be.EqualTo(0x0011);
         }
 
+        [Test]
+        public void StepRun_CanSetVxRandomNumberAndNn()
+        {
+            // Arrange:
+            this.processor.RegisterV[0x0] = 0x00;
+            this.processor.Memory[0x200] = 0xC011;
+
+            // Act:
+            this.processor.StepRun();
+
+            // Assert:
+            this.processor.RegisterV[0x0].Should().Not.Be.EqualTo(0x00);
+        }
+
     }
 }
