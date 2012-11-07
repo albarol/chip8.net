@@ -2,18 +2,18 @@
 {
     public class Processor
     {
-        private readonly Stack stack;
-
         public Processor()
         {
             this.Memory = new Memory();
             this.ProgramCounter = 0x200;
             this.RegisterV = new Register(0x10);
-            this.stack = new Stack();
+            this.Stack = new Stack();
         }
 
         public Memory Memory { get; private set; }
         public Register RegisterV { get; private set; }
+        public Stack Stack { get; private set; }
+        public int RegisterI { get; private set; }
 
         public int ProgramCounter { get; private set; }
 
@@ -101,6 +101,10 @@
             {
                 this.SkipNextRegisterVxNotEqualVy(opcode);
             }
+            else if ((opcode & 0xF000) == Instructions.SetIToAddressNnn)
+            {
+                this.SetIToAddressNnn(opcode);
+            }
         }
 
         private void JumpTo(int opcode)
@@ -112,7 +116,7 @@
         private void CallRoutine(int opcode)
         {
             int address = opcode & 0x0FFF;
-            this.stack.Push(this.ProgramCounter);
+            this.Stack.Push(this.ProgramCounter);
             this.ProgramCounter = address;
         }
 
@@ -148,8 +152,6 @@
                 this.ProgramCounter += 0x2;
             }
         }
-
-        
 
         private void SetVxToNn(int opcode)
         {
@@ -250,6 +252,12 @@
             {
                 this.ProgramCounter += 0x2;
             }
+        }
+
+        private void SetIToAddressNnn(int opcode)
+        {
+            int place = opcode & 0x0FFF;
+            this.RegisterI = place;
         }
     }
 }

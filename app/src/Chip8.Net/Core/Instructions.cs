@@ -21,6 +21,7 @@
         public const int SetVxToVyMinusVx = 0x8007;
         public const int ShiftVxLeftByOne = 0x800E;
         public const int SkipNextRegisterVxNotEqualVy = 0x9000;
+        public const int SetIToAddressNnn = 0xA000;
         
     }
 }

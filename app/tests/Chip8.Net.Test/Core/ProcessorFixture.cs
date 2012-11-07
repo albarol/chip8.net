@@ -345,5 +345,18 @@
             this.processor.ProgramCounter.Should().Be.EqualTo(0x202);
         }
 
+        [Test]
+        public void StepRun_CanSetRegisterIToAdressNnn()
+        {
+            // Arrange:
+            this.processor.Memory[0x200] = 0xA010;
+
+            // Act:
+            this.processor.StepRun();
+
+            // Assert:
+            this.processor.RegisterI.Should().Be.EqualTo(0x0010);
+        }
+
     }
 }
