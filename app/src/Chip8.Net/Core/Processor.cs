@@ -81,9 +81,13 @@
             {
                 this.AddVyToVx(opcode);
             }
-            else if ((opcode & 0xF00F) == Instructions.SubtractVyToVx)
+            else if ((opcode & 0xF00F) == Instructions.SubtractVyFromVx)
             {
                 this.SubtractVyToVx(opcode);
+            }
+            else if ((opcode & 0xF00F) == Instructions.ShiftVxRightByOne)
+            {
+                this.ShiftVxRightByOne(opcode);
             }
         }
 
@@ -180,16 +184,8 @@
             const int Carry = 0xF;
             int positionX = (opcode & 0x0F00) >> 8;
             int positionY = (opcode & 0x00F0) >> 4 & 0x0F;
-            
-            if (this.RegisterV[positionX] + this.RegisterV[positionY] > 0xFF)
-            {
-                this.RegisterV[Carry] = 0x1;
-            }
-            else
-            {
-                this.RegisterV[Carry] = 0x0;
-            }
 
+            this.RegisterV[Carry] = (this.RegisterV[positionX] + this.RegisterV[positionY] > 0xFF) ? 0x1 : 0x0;
             this.RegisterV[positionX] = (this.RegisterV[positionX] + this.RegisterV[positionY]) & 0xFF;
         }
 
@@ -198,18 +194,18 @@
             const int Carry = 0xF;
             int positionX = (opcode & 0x0F00) >> 8;
             int positionY = (opcode & 0x00F0) >> 4 & 0x0F;
-            
-            if (this.RegisterV[positionX] > this.RegisterV[positionY])
-            {
-                this.RegisterV[Carry] = 0x1;
-            }
-            else
-            {
-                this.RegisterV[Carry] = 0x0;
-            }
 
+            this.RegisterV[Carry] = (this.RegisterV[positionX] > this.RegisterV[positionY]) ? 0x1 : 0x0;
             this.RegisterV[positionX] = this.RegisterV[positionX] - this.RegisterV[positionY];
         }
-        
+
+        private void ShiftVxRightByOne(int opcode)
+        {
+            const int Carry = 0xF;
+            int positionX = (opcode & 0x0F00) >> 8;
+
+            this.RegisterV[Carry] = (this.RegisterV[positionX] & 0x1) == 0x1 ? 0x1 : 0x0;
+            this.RegisterV[positionX] = this.RegisterV[positionX] >> 0x1;
+        }
     }
 }
