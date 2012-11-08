@@ -157,6 +157,10 @@
             {
                 this.AddVxToI(opcode);
             }
+            else if ((opcode & 0xF0FF) == Instructions.SetILocationToVx)
+            {
+                this.SetILocationToVx(opcode);
+            }
         }
 
         private void JumpTo(int opcode)
@@ -391,6 +395,14 @@
         {
             int positionX = opcode & 0x0F00;
             this.RegisterI += this.RegisterV[positionX];
+            this.RegisterV[0xF] = (this.RegisterI > 0xFFF) ? 0x1 : 0x0;
+            this.RegisterI = this.RegisterI & 0xFFF;
+        }
+        
+        private void SetILocationToVx(int opcode)
+        {
+            int positionX = opcode & 0x0F00;
+            this.RegisterI = Character.GetCharacter(this.RegisterV[positionX]);
         }
     }
 }

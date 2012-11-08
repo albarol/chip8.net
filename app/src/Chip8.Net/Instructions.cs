@@ -32,5 +32,6 @@
         public const int SetDelayTimerToVx = 0xF015;
         public const int SetSoundTimerToVx = 0xF018;
         public const int AddVxToI = 0xF01E;
+        public const int SetILocationToVx = 0xF029;
     }
 }

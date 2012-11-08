@@ -1,5 +1,8 @@
 ﻿namespace Chip8.Net.Test
 {
+    using System;
+    using System.Collections.Generic;
+
     using NUnit.Framework;
 
     using SharpTestsEx;
@@ -455,5 +458,18 @@
             this.processor.RegisterI.Should().Be.EqualTo(0x1);
         }
 
+        [Test]
+        public void StepRun_CanSetILocationToVx()
+        {
+            // Arrange:
+            this.processor.RegisterV[0x0] = 0x01;
+            this.processor.Memory[0x200] = 0xF029;
+
+            // Act:
+            this.processor.StepRun();
+
+            // Assert:
+            this.processor.RegisterI.Should().Be.EqualTo(0x31);
+        }
     }
 }
