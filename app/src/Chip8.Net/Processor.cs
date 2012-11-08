@@ -123,9 +123,13 @@
             {
                 this.DrawSprite(opcode);
             }
-            else if ((opcode & 0xF00F) == Instructions.SkipIfKeyInVxPressed)
+            else if ((opcode & 0xF0FF) == Instructions.SkipIfKeyInVxPressed)
             {
                 this.SkipIfKeyInVxPressed(opcode);
+            }
+            else if ((opcode & 0xF0FF) == Instructions.SkipIfKeyInVxNotPressed)
+            {
+                this.SkipIfKeyInVxNotPressed(opcode);
             }
             
         }
@@ -317,6 +321,15 @@
         {
             int positionX = opcode & 0x0F00;
             if (this.RegisterV[positionX] == Keyboard.LastPressedKey)
+            {
+                this.ProgramCounter += 0x2;
+            }
+        }
+
+        private void SkipIfKeyInVxNotPressed(int opcode)
+        {
+            int positionX = opcode & 0x0F00;
+            if (this.RegisterV[positionX] != Keyboard.LastPressedKey)
             {
                 this.ProgramCounter += 0x2;
             }

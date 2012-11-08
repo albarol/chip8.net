@@ -394,7 +394,22 @@
             this.processor.StepRun();
 
             // Assert:
-            this.processor.ProgramCounter.Should().Not.Be.EqualTo(0x2);
+            this.processor.ProgramCounter.Should().Be.EqualTo(0x202);
+        }
+
+        [Test]
+        public void StepRun_CanSkipWhenLastPressedKeyIsNotEqualVx()
+        {
+            // Arrange:
+            this.processor.RegisterV[0x0] = 0x01;
+            this.processor.Memory[0x200] = 0xE0A1;
+            this.processor.Keyboard.LastPressedKey = 0x00;
+
+            // Act:
+            this.processor.StepRun();
+
+            // Assert:
+            this.processor.ProgramCounter.Should().Be.EqualTo(0x202);
         }
 
     }
