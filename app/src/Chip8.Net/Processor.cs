@@ -8,7 +8,7 @@
         private int soundTimer;
         private int stack;
         
-        public Processor()
+        public Processor(Gpu gpu)
         {
             this.delayTimer = 0x0;
             this.soundTimer = 0x0;
@@ -16,7 +16,7 @@
             this.Memory = new Memory();
             this.ProgramCounter = 0x200;
             this.RegisterV = new Register(0x10);
-            this.Gpu = new Gpu();
+            this.Gpu = gpu;
             this.Keyboard = new Keyboard();
         }
 
@@ -356,6 +356,7 @@
                 sprite[count++] = this.Memory[index];
             }
             this.RegisterV[Carry] = this.Gpu.Draw(this.RegisterV[positionX], this.RegisterV[positionY], sprite);
+            this.Gpu.DrawFrame();
         }
 
         private void SkipIfKeyInVxPressed(int opcode)

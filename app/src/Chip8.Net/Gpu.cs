@@ -2,11 +2,11 @@
 {
     using System;
 
-    public class Gpu
+    public abstract class Gpu
     {
-        private const int Width = 64;
-        private const int Height = 32;
-        private readonly int[,] gfx = new int[Width, Height];
+        protected const int Width = 64;
+        protected const int Height = 32;
+        protected readonly int[,] Gfx = new int[Width, Height];
 
         public int Draw(int x, int y, int[] sprite)
         {
@@ -27,12 +27,12 @@
                             break;
                         }
 
-                        if (this.gfx[positionX + pixel, positionY + i] == 0x1)
+                        if (this.Gfx[positionX + pixel, positionY + i] == 0x1)
                         {
                             carry = 0x1;
                         }
 
-                        this.gfx[positionX + pixel, positionY + i] ^= 0x1;
+                        this.Gfx[positionX + pixel, positionY + i] ^= 0x1;
                     }
                 }
             }
@@ -40,10 +40,7 @@
             return carry;
         }
 
-        private char[] TransformBitCodedToString(int value)
-        {
-            return Convert.ToString(value, 2).PadLeft(8, '0').ToCharArray();
-        }
+        public abstract void DrawFrame();
 
         public void Clear()
         {
@@ -51,9 +48,14 @@
             {
                 for (int x = 0; x < Width; x++)
                 {
-                    this.gfx[x, y] = 0x0;
+                    this.Gfx[x, y] = 0x0;
                 }
             }
+        }
+
+        private char[] TransformBitCodedToString(int value)
+        {
+            return Convert.ToString(value, 2).PadLeft(8, '0').ToCharArray();
         }
     }
 }

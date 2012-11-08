@@ -2,6 +2,8 @@
 {
     using System;
 
+    using Chip8.Net.Test.Helpers;
+
     using NUnit.Framework;
 
     using SharpTestsEx;
@@ -14,7 +16,7 @@
         [SetUp]
         public void SetUp()
         {
-            this.processor = new Processor();
+            this.processor = new Processor(new TestGpu());
         }
         
         [Test]

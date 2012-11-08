@@ -38,5 +38,14 @@
                 this.memory[position] = 0x0;
             }
         }
+
+        public void LoadRom(int[] rom)
+        {
+            const int Position = 0x200;
+            for (int i = 0x0; i < rom.Length; i++)
+            {
+                this.memory[Position + i] = rom[i];
+            }
+        }
     }
 }

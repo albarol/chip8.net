@@ -1,7 +1,6 @@
 ﻿namespace Chip8.Net.Test
 {
-    using System;
-    using System.Collections.Generic;
+    using Chip8.Net.Test.Helpers;
 
     using NUnit.Framework;
 
@@ -15,7 +14,7 @@
         [SetUp]
         public void SetUp()
         {
-            this.processor = new Processor();
+            this.processor = new Processor(new TestGpu());
         }
         
         [Test]
