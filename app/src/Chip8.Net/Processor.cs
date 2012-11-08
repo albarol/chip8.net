@@ -4,8 +4,11 @@
 
     public class Processor
     {
+        private int delayTimer;
+        
         public Processor()
         {
+            this.delayTimer = 0x0;
             this.Memory = new Memory();
             this.ProgramCounter = 0x200;
             this.RegisterV = new Register(0x10);
@@ -130,6 +133,10 @@
             else if ((opcode & 0xF0FF) == Instructions.SkipIfKeyInVxNotPressed)
             {
                 this.SkipIfKeyInVxNotPressed(opcode);
+            }
+            else if ((opcode & 0xF00F) == Instructions.SetVxToDelayTimer)
+            {
+                this.SetVxToDelayTimer(opcode);
             }
             
         }
@@ -334,5 +341,12 @@
                 this.ProgramCounter += 0x2;
             }
         }
+
+        private void SetVxToDelayTimer(int opcode)
+        {
+            int positionX = opcode & 0x0F00;
+            this.RegisterV[positionX] = delayTimer;
+        }
+        
     }
 }
