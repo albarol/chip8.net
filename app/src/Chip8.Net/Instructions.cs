@@ -28,5 +28,6 @@
         public const int SkipIfKeyInVxPressed = 0xE09E;
         public const int SkipIfKeyInVxNotPressed = 0xE0A1;
         public const int SetVxToDelayTimer = 0xF007;
+        public const int StoreWaitingKeyInVx = 0xF00A;
     }
 }

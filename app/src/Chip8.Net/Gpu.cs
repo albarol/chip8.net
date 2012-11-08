@@ -44,5 +44,16 @@
         {
             return Convert.ToString(value, 2).PadLeft(8, '0').ToCharArray();
         }
+
+        public void Clear()
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                for (int x = 0; x < Width; x++)
+                {
+                    this.gfx[x, y] = 0x0;
+                }
+            }
+        }
     }
 }

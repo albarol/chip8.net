@@ -5,6 +5,7 @@
     public class Processor
     {
         private int delayTimer;
+        private int stack;
         
         public Processor()
         {
@@ -12,14 +13,13 @@
             this.Memory = new Memory();
             this.ProgramCounter = 0x200;
             this.RegisterV = new Register(0x10);
-            this.Stack = new Stack();
+            this.stack = 0x0;
             this.Gpu = new Gpu();
             this.Keyboard = new Keyboard();
         }
 
         public Memory Memory { get; private set; }
         public Register RegisterV { get; private set; }
-        public Stack Stack { get; private set; }
         public int RegisterI { get; private set; }
         public Gpu Gpu { get; private set; }
         public Keyboard Keyboard { get; private set; }
@@ -36,11 +36,12 @@
         {
             if (opcode == Instructions.ClearScreen)
             {
-                return;
+                Gpu.Clear();
             }
             else if (opcode == Instructions.ReturnRoutine)
             {
-                
+                this.ProgramCounter = this.stack;
+                this.stack = 0x0;
             }
             else if ((opcode & 0xF000) == Instructions.JumpTo)
             {
@@ -138,7 +139,10 @@
             {
                 this.SetVxToDelayTimer(opcode);
             }
-            
+            else if ((opcode & 0xF00F) == Instructions.StoreWaitingKeyInVx)
+            {
+                this.StoreWaitingKeyInVx(opcode);
+            }
         }
 
         private void JumpTo(int opcode)
@@ -150,7 +154,7 @@
         private void CallRoutine(int opcode)
         {
             int address = opcode & 0x0FFF;
-            this.Stack.Push(this.ProgramCounter);
+            this.stack = this.ProgramCounter;
             this.ProgramCounter = address;
         }
 
@@ -345,7 +349,13 @@
         private void SetVxToDelayTimer(int opcode)
         {
             int positionX = opcode & 0x0F00;
-            this.RegisterV[positionX] = delayTimer;
+            this.RegisterV[positionX] = this.delayTimer;
+        }
+
+        private void StoreWaitingKeyInVx(int opcode)
+        {
+            int positionX = opcode & 0x0F00;
+            this.RegisterV[positionX] = this.Keyboard.LastPressedKey;
         }
         
     }
