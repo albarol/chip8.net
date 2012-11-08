@@ -388,7 +388,7 @@
             // Arrange:
             this.processor.RegisterV[0x0] = 0x01;
             this.processor.Memory[0x200] = 0xE09E;
-            this.processor.Keyboard.LastPressedKey = 0x01;
+            this.processor.Keyboard.PressKey(0x01);
 
             // Act:
             this.processor.StepRun();
@@ -403,7 +403,7 @@
             // Arrange:
             this.processor.RegisterV[0x0] = 0x01;
             this.processor.Memory[0x200] = 0xE0A1;
-            this.processor.Keyboard.LastPressedKey = 0x00;
+            this.processor.Keyboard.PressKey(0x00);
 
             // Act:
             this.processor.StepRun();
@@ -413,11 +413,11 @@
         }
 
         [Test]
-        public void StepRun_CanSetVxToDelayTimer()
+        public void StepRun_CanSetDelayTimerToVx()
         {
             // Arrange:
             this.processor.RegisterV[0x0] = 0x01;
-            this.processor.Memory[0x200] = 0xF007;
+            this.processor.Memory[0x200] = 0xF015;
 
             // Act:
             this.processor.StepRun();
@@ -431,13 +431,14 @@
         {
             // Arrange:
             this.processor.RegisterV[0x0] = 0x01;
-            this.processor.Memory[0x200] = 0xF007;
+            this.processor.Memory[0x200] = 0xF00A;
+            this.processor.Keyboard.PressKey(0x01);
 
             // Act:
             this.processor.StepRun();
 
             // Assert:
-            this.processor.RegisterV[0x0].Should().Be.EqualTo(0x0);
+            this.processor.RegisterV[0x0].Should().Be.EqualTo(0x1);
         }
 
     }

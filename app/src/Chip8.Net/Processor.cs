@@ -143,6 +143,10 @@
             {
                 this.StoreWaitingKeyInVx(opcode);
             }
+            else if ((opcode & 0xF0FF) == Instructions.SetDelayTimerToVx)
+            {
+                this.SetDelayTimerToVx(opcode);
+            }
         }
 
         private void JumpTo(int opcode)
@@ -349,14 +353,22 @@
         private void SetVxToDelayTimer(int opcode)
         {
             int positionX = opcode & 0x0F00;
-            this.RegisterV[positionX] = this.delayTimer;
+            this.delayTimer = this.RegisterV[positionX];
         }
 
         private void StoreWaitingKeyInVx(int opcode)
         {
             int positionX = opcode & 0x0F00;
+            while (Keyboard.WaitingKey())
+            {
+            }
             this.RegisterV[positionX] = this.Keyboard.LastPressedKey;
         }
-        
+
+        private void SetDelayTimerToVx(int opcode)
+        {
+            int positionX = opcode & 0x0F00;
+            this.RegisterV[positionX] = this.delayTimer;
+        }
     }
 }
