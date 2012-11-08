@@ -35,5 +35,6 @@
         public const int SetIToCharacterVx = 0xF029;
         public const int StoreInVxDecimalRegisterI = 0xF033;
         public const int StoreV0ToVx = 0xF055;
+        public const int FillV0ToVxFromMemory = 0xF065;
     }
 }

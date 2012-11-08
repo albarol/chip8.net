@@ -169,7 +169,13 @@
             {
                 this.StoreV0ToVx(opcode);
             }
+            else if ((opcode & 0xF0FF) == Instructions.FillV0ToVxFromMemory)
+            {
+                this.FillV0ToVxFromMemory(opcode);
+            }
         }
+
+        
 
         private void JumpTo(int opcode)
         {
@@ -427,5 +433,13 @@
             }
         }
 
+        private void FillV0ToVxFromMemory(int opcode)
+        {
+            int positionX = (opcode & 0x0F00) >> 8;
+            for (int i = 0; i <= positionX; i++)
+            {
+                this.RegisterV[i] = this.RegisterV[this.RegisterI + i];
+            }
+        }
     }
 }

@@ -493,5 +493,27 @@
             this.processor.RegisterV[0x1].Should().Be.EqualTo(0x01);
             this.processor.RegisterV[0x2].Should().Be.EqualTo(0x01);
         }
+
+        [Test]
+        public void StepRun_CanFillV0ToVx()
+        {
+            // Arrange:
+            this.processor.Memory[0x200] = 0xA002;
+            this.processor.StepRun();
+
+            this.processor.RegisterV[0x0] = 0x01;
+            this.processor.RegisterV[0x1] = 0x02;
+            this.processor.RegisterV[0x2] = 0x03;
+            this.processor.RegisterV[0x3] = 0x04;
+            this.processor.RegisterV[0x4] = 0x05;
+            this.processor.Memory[0x201] = 0xF465;
+
+            // Act:
+            this.processor.StepRun();
+
+            // Assert:
+            this.processor.RegisterV[0x0].Should().Be.EqualTo(0x03);
+            this.processor.RegisterV[0x1].Should().Be.EqualTo(0x04);
+        }
     }
 }
