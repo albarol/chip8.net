@@ -25,6 +25,6 @@
         public const int JumpToPlusV0 = 0xB000;
         public const int SetVxRandomNumberAndNn = 0xC000;
         public const int DrawSprite = 0xD000;
-        // public const int SkipIfKeyInVxPressed = 0xE09E;
+        public const int SkipIfKeyInVxPressed = 0xE09E;
     }
 }

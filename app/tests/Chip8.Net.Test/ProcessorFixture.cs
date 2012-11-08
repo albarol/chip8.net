@@ -382,5 +382,20 @@
             this.processor.RegisterV[0x0].Should().Not.Be.EqualTo(0x00);
         }
 
+        [Test]
+        public void StepRun_CanSkipWhenLastPressedKeyIsEqualVx()
+        {
+            // Arrange:
+            this.processor.RegisterV[0x0] = 0x01;
+            this.processor.Memory[0x200] = 0xE09E;
+            this.processor.Keyboard.LastPressedKey = 0x01;
+
+            // Act:
+            this.processor.StepRun();
+
+            // Assert:
+            this.processor.ProgramCounter.Should().Not.Be.EqualTo(0x2);
+        }
+
     }
 }

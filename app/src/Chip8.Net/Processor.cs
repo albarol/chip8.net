@@ -11,6 +11,7 @@
             this.RegisterV = new Register(0x10);
             this.Stack = new Stack();
             this.Gpu = new Gpu();
+            this.Keyboard = new Keyboard();
         }
 
         public Memory Memory { get; private set; }
@@ -18,6 +19,7 @@
         public Stack Stack { get; private set; }
         public int RegisterI { get; private set; }
         public Gpu Gpu { get; private set; }
+        public Keyboard Keyboard { get; private set; }
 
         public int ProgramCounter { get; private set; }
 
@@ -121,10 +123,10 @@
             {
                 this.DrawSprite(opcode);
             }
-            //else if ((opcode & 0xF00F) == Instructions.SkipIfKeyInVxPressed)
-            //{
-            //    this.SkipIfKeyInVxPressed(opcode);
-            //}
+            else if ((opcode & 0xF00F) == Instructions.SkipIfKeyInVxPressed)
+            {
+                this.SkipIfKeyInVxPressed(opcode);
+            }
             
         }
 
@@ -311,9 +313,13 @@
             this.RegisterV[Carry] = this.Gpu.Draw(this.RegisterV[positionX], this.RegisterV[positionY], sprite);
         }
 
-        //private void SkipIfKeyInVxPressed(int opcode)
-        //{
-            
-        //}
+        private void SkipIfKeyInVxPressed(int opcode)
+        {
+            int positionX = opcode & 0x0F00;
+            if (this.RegisterV[positionX] == Keyboard.LastPressedKey)
+            {
+                this.ProgramCounter += 0x2;
+            }
+        }
     }
 }
