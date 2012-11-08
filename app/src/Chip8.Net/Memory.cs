@@ -14,7 +14,7 @@
         {
             get
             {
-                if (index < 0x200 || index > 0xFFF)
+                if (index > 0xFFF)
                 {
                     throw new ArgumentException("Invalid access memory");
                 }
@@ -23,7 +23,7 @@
             }
             set
             {
-                if (index < 0x200 || index > 0xFFF)
+                if (index > 0xFFF)
                 {
                     throw new ArgumentException("Invalid access memory");
                 }

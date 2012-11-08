@@ -175,8 +175,6 @@
             }
         }
 
-        
-
         private void JumpTo(int opcode)
         {
             int address = opcode & 0x0FFF;
@@ -421,7 +419,12 @@
 
         private void StoreInVxDecimalRegisterI(int opcode)
         {
-            throw new NotImplementedException();
+            int positionX = (opcode & 0x0FFF) >> 8;
+            string representation = (this.RegisterV[positionX] & 0xFFF).ToString("D3");
+            
+            this.Memory[this.RegisterI] = Convert.ToInt32(representation[0].ToString());
+            this.Memory[this.RegisterI + 1] = Convert.ToInt32(representation[1].ToString());
+            this.Memory[this.RegisterI + 2] = Convert.ToInt32(representation[2].ToString());
         }
 
         private void StoreV0ToVx(int opcode)
@@ -429,7 +432,7 @@
             int positionX = (opcode & 0x0F00) >> 8;
             for (int i = 0; i <= positionX; i++)
             {
-                this.RegisterV[this.RegisterI + i] = this.RegisterV[i];
+                this.Memory[this.RegisterI + i] = this.RegisterV[i];
             }
         }
 

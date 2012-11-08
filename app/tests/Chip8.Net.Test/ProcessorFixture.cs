@@ -473,6 +473,23 @@
         }
 
         [Test]
+        public void StepRun_CanStoreInVxDecimalRegisterI()
+        {
+            // Arrange:
+            this.processor.Memory[0x200] = 0xA001;
+            this.processor.Memory[0x201] = 0xF033;
+            this.processor.RegisterV[0x0] = 0x20;
+            this.processor.StepRun();
+
+            // Act:
+            this.processor.StepRun();
+
+            // Assert:
+            this.processor.Memory[0x2].Should().Be.EqualTo(0x03);
+            this.processor.Memory[0x3].Should().Be.EqualTo(0x02);
+        }
+
+        [Test]
         public void StepRun_CanStoreV0ToVx()
         {
             // Arrange:
