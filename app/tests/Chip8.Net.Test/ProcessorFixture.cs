@@ -441,5 +441,19 @@
             this.processor.RegisterV[0x0].Should().Be.EqualTo(0x1);
         }
 
+        [Test]
+        public void StepRun_CanAddVxToI()
+        {
+            // Arrange:
+            this.processor.RegisterV[0x0] = 0x01;
+            this.processor.Memory[0x200] = 0xF01E;
+
+            // Act:
+            this.processor.StepRun();
+
+            // Assert:
+            this.processor.RegisterI.Should().Be.EqualTo(0x1);
+        }
+
     }
 }

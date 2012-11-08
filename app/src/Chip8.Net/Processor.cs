@@ -153,6 +153,10 @@
             {
                 this.SetSoundTimerToVx(opcode);
             }
+            else if ((opcode & 0xF0FF) == Instructions.AddVxToI)
+            {
+                this.AddVxToI(opcode);
+            }
         }
 
         private void JumpTo(int opcode)
@@ -381,6 +385,12 @@
         {
             int positionX = opcode & 0x0F00;
             this.RegisterV[positionX] = this.soundTimer;
+        }
+
+        private void AddVxToI(int opcode)
+        {
+            int positionX = opcode & 0x0F00;
+            this.RegisterI += this.RegisterV[positionX];
         }
     }
 }
