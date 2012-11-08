@@ -30,7 +30,7 @@
 
         public void StepRun()
         {
-            var opcode = this.Memory[this.ProgramCounter];
+            var opcode = this.Memory[this.ProgramCounter++];
             this.InterpretOpcode(opcode);
         }
 
@@ -157,9 +157,17 @@
             {
                 this.AddVxToI(opcode);
             }
-            else if ((opcode & 0xF0FF) == Instructions.SetILocationToVx)
+            else if ((opcode & 0xF0FF) == Instructions.SetIToCharacterVx)
             {
-                this.SetILocationToVx(opcode);
+                this.SetIToCharacterVx(opcode);
+            }
+            else if ((opcode & 0xF0FF) == Instructions.StoreInVxDecimalRegisterI)
+            {
+                this.StoreInVxDecimalRegisterI(opcode);
+            }
+            else if ((opcode & 0xF0FF) == Instructions.StoreV0ToVx)
+            {
+                this.StoreV0ToVx(opcode);
             }
         }
 
@@ -348,7 +356,7 @@
 
         private void SkipIfKeyInVxPressed(int opcode)
         {
-            int positionX = opcode & 0x0F00;
+            int positionX = (opcode & 0x0F00) >> 8;
             if (this.RegisterV[positionX] == Keyboard.LastPressedKey)
             {
                 this.ProgramCounter += 0x2;
@@ -357,7 +365,7 @@
 
         private void SkipIfKeyInVxNotPressed(int opcode)
         {
-            int positionX = opcode & 0x0F00;
+            int positionX = (opcode & 0x0F00) >> 8;
             if (this.RegisterV[positionX] != Keyboard.LastPressedKey)
             {
                 this.ProgramCounter += 0x2;
@@ -366,13 +374,13 @@
 
         private void SetVxToDelayTimer(int opcode)
         {
-            int positionX = opcode & 0x0F00;
+            int positionX = (opcode & 0x0F00) >> 8;
             this.delayTimer = this.RegisterV[positionX];
         }
 
         private void StoreWaitingKeyInVx(int opcode)
         {
-            int positionX = opcode & 0x0F00;
+            int positionX = (opcode & 0x0F00) >> 8;
             while (Keyboard.WaitingKey())
             {
             }
@@ -381,28 +389,43 @@
 
         private void SetDelayTimerToVx(int opcode)
         {
-            int positionX = opcode & 0x0F00;
+            int positionX = (opcode & 0x0F00) >> 8;
             this.RegisterV[positionX] = this.delayTimer;
         }
 
         private void SetSoundTimerToVx(int opcode)
         {
-            int positionX = opcode & 0x0F00;
+            int positionX = (opcode & 0x0F00) >> 8;
             this.RegisterV[positionX] = this.soundTimer;
         }
 
         private void AddVxToI(int opcode)
         {
-            int positionX = opcode & 0x0F00;
+            int positionX = (opcode & 0x0F00) >> 8;
             this.RegisterI += this.RegisterV[positionX];
             this.RegisterV[0xF] = (this.RegisterI > 0xFFF) ? 0x1 : 0x0;
             this.RegisterI = this.RegisterI & 0xFFF;
         }
         
-        private void SetILocationToVx(int opcode)
+        private void SetIToCharacterVx(int opcode)
         {
-            int positionX = opcode & 0x0F00;
+            int positionX = (opcode & 0x0F00) >> 8;
             this.RegisterI = Character.GetCharacter(this.RegisterV[positionX]);
         }
+
+        private void StoreInVxDecimalRegisterI(int opcode)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void StoreV0ToVx(int opcode)
+        {
+            int positionX = (opcode & 0x0F00) >> 8;
+            for (int i = 0; i <= positionX; i++)
+            {
+                this.RegisterV[this.RegisterI + i] = this.RegisterV[i];
+            }
+        }
+
     }
 }

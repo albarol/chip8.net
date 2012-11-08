@@ -391,7 +391,7 @@
             // Arrange:
             this.processor.RegisterV[0x0] = 0x01;
             this.processor.Memory[0x200] = 0xE09E;
-            this.processor.Keyboard.PressKey(0x01);
+            this.processor.Keyboard.PressKey(0x50);
 
             // Act:
             this.processor.StepRun();
@@ -406,7 +406,7 @@
             // Arrange:
             this.processor.RegisterV[0x0] = 0x01;
             this.processor.Memory[0x200] = 0xE0A1;
-            this.processor.Keyboard.PressKey(0x00);
+            this.processor.Keyboard.PressKey(0x41);
 
             // Act:
             this.processor.StepRun();
@@ -435,13 +435,13 @@
             // Arrange:
             this.processor.RegisterV[0x0] = 0x01;
             this.processor.Memory[0x200] = 0xF00A;
-            this.processor.Keyboard.PressKey(0x01);
+            this.processor.Keyboard.PressKey(0x52);
 
             // Act:
             this.processor.StepRun();
 
             // Assert:
-            this.processor.RegisterV[0x0].Should().Be.EqualTo(0x1);
+            this.processor.RegisterV[0x0].Should().Be.EqualTo(0x3);
         }
 
         [Test]
@@ -470,6 +470,28 @@
 
             // Assert:
             this.processor.RegisterI.Should().Be.EqualTo(0x31);
+        }
+
+        [Test]
+        public void StepRun_CanStoreV0ToVx()
+        {
+            // Arrange:
+            this.processor.Memory[0x200] = 0xA001;
+            this.processor.StepRun();
+
+            this.processor.RegisterV[0x0] = 0x01;
+            this.processor.RegisterV[0x1] = 0x02;
+            this.processor.RegisterV[0x2] = 0x03;
+            this.processor.RegisterV[0x3] = 0x04;
+            this.processor.RegisterV[0x4] = 0x05;
+            this.processor.Memory[0x201] = 0xF455;
+
+            // Act:
+            this.processor.StepRun();
+
+            // Assert:
+            this.processor.RegisterV[0x1].Should().Be.EqualTo(0x01);
+            this.processor.RegisterV[0x2].Should().Be.EqualTo(0x01);
         }
     }
 }
