@@ -5,15 +5,17 @@
     public class Processor
     {
         private int delayTimer;
+        private int soundTimer;
         private int stack;
         
         public Processor()
         {
             this.delayTimer = 0x0;
+            this.soundTimer = 0x0;
+            this.stack = 0x0;
             this.Memory = new Memory();
             this.ProgramCounter = 0x200;
             this.RegisterV = new Register(0x10);
-            this.stack = 0x0;
             this.Gpu = new Gpu();
             this.Keyboard = new Keyboard();
         }
@@ -146,6 +148,10 @@
             else if ((opcode & 0xF0FF) == Instructions.SetDelayTimerToVx)
             {
                 this.SetDelayTimerToVx(opcode);
+            }
+            else if ((opcode & 0xF0FF) == Instructions.SetSoundTimerToVx)
+            {
+                this.SetSoundTimerToVx(opcode);
             }
         }
 
@@ -369,6 +375,12 @@
         {
             int positionX = opcode & 0x0F00;
             this.RegisterV[positionX] = this.delayTimer;
+        }
+
+        private void SetSoundTimerToVx(int opcode)
+        {
+            int positionX = opcode & 0x0F00;
+            this.RegisterV[positionX] = this.soundTimer;
         }
     }
 }

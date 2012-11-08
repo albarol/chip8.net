@@ -30,6 +30,6 @@
         public const int SetVxToDelayTimer = 0xF007;
         public const int StoreWaitingKeyInVx = 0xF00A;
         public const int SetDelayTimerToVx = 0xF015;
-
+        public const int SetSoundTimerToVx = 0xF018;
     }
 }
