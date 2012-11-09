@@ -1,7 +1,5 @@
 ﻿namespace Chip8.Net.Video
 {
-    using System;
-    using System.Drawing;
     using System.Timers;
     using System.Windows.Forms;
 
@@ -23,7 +21,9 @@
         private void Initialize()
         {
             this.processor = new Processor(new VideoRender(this));
-            this.processor.Memory.LoadRom(Loader.LoadRom(@"C:\_user\projects\chip8.net\roms\CONNECT4"));
+            this.processor.Memory.LoadRom(Loader.LoadRom(@"E:\Github\chip8.net\roms\PUZZLE.rom"));
+            this.processor.Memory.LoadCharacters();
+
             this.cycleTimer = new CycleTimer
             {
                 Enabled = true,

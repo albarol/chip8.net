@@ -442,7 +442,7 @@
             int positionX = (opcode & 0x0F00) >> 8;
             for (int i = 0; i <= positionX; i++)
             {
-                this.RegisterV[i] = this.RegisterV[this.RegisterI + i];
+                this.RegisterV[i] = this.Memory[this.RegisterI + i];
             }
         }
     }
