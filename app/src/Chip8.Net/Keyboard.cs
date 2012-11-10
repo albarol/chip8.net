@@ -50,7 +50,7 @@
         
         public bool WaitingKey()
         {
-            return this.LastPressedKey == this.releaseKey;
+            return this.LastPressedKey != this.releaseKey;
         }
     }
 }

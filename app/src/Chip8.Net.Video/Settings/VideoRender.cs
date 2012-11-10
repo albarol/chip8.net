@@ -6,15 +6,15 @@
     public class VideoRender : Gpu
     {
         private const int Size = 0x6;
-        private readonly Form view;
-        private readonly Pen foreground;
-        private readonly Pen background;
+        private readonly PictureBox view;
+        private readonly Brush foreground;
+        private readonly Brush background;
 
-        public VideoRender(Form view)
+        public VideoRender(PictureBox view)
         {
             this.view = view;
-            this.foreground = new Pen(Color.Azure);
-            this.background = new Pen(Color.Black);
+            this.foreground = new SolidBrush(Color.Azure);
+            this.background = new SolidBrush(Color.Aqua);
         }
         
         public override void DrawFrame()
@@ -27,11 +27,11 @@
                 {
                     if (this.Gfx[row, column] == 0x0)
                     {
-                        g.DrawRectangle(this.background, row * Size, column * Size, Size, Size);
+                        g.FillRectangle(this.background, row * Size, column * Size, Size, Size);
                     }
                     else
                     {
-                        g.DrawRectangle(this.foreground, row * Size, column * Size, Size, Size);
+                        g.FillRectangle(this.foreground, row * Size, column * Size, Size, Size);
                     }
                 }
             }

@@ -1,10 +1,6 @@
 ﻿namespace Chip8.Net.Video.Settings
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
     using System.IO;
-    using System.Linq;
 
     public class Loader
     {
@@ -12,16 +8,13 @@
         {
             using (var stream = new FileStream(filename, FileMode.Open))
             {
-                IList<int> opcodes = new List<int>();
+                int[] rom = new int[stream.Length];
                 
-                for (int i = 0; i < stream.Length; i += 2)
+                for (int i = 0; i < stream.Length; i++)
                 {
-                    string first = stream.ReadByte().ToString("X");
-                    string second = stream.ReadByte().ToString("X").PadLeft(2, '0');
-                    int opcode = int.Parse(string.Format("{0}{1}", first, second), NumberStyles.HexNumber);
-                    opcodes.Add(opcode);
+                    rom[i] = stream.ReadByte();
                 }
-                return opcodes.ToArray();
+                return rom;
             }
         }
     }

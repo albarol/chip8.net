@@ -20,7 +20,7 @@
         
         private void Initialize()
         {
-            this.processor = new Processor(new VideoRender(this));
+            this.processor = new Processor(new VideoRender(this.pbMonitor));
             this.processor.Memory.LoadRom(Loader.LoadRom(@"E:\Github\chip8.net\roms\PUZZLE.rom"));
             this.processor.Memory.LoadCharacters();
 
@@ -38,6 +38,14 @@
             this.cycleTimer.Stop();
             this.processor.StepRun();
             this.cycleTimer.Start();
+
+            //this.processor.Memory[0x0] = 0x3C;
+            //this.processor.Memory[0x1] = 0xC3;
+            //this.processor.Memory[0x2] = 0xFF;
+            //this.processor.Memory[0x200] = 0xD003;
+            //this.processor.StepRun();
+
+
         }
     }
 }

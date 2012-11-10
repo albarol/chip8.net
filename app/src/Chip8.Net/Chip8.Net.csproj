@@ -42,7 +42,8 @@
   <ItemGroup>
     <Compile Include="Character.cs" />
     <Compile Include="Gpu.cs" />
-    <Compile Include="Instructions.cs" />
+    <Compile Include="Instruction.cs" />
+    <Compile Include="Opcodes.cs" />
     <Compile Include="Keyboard.cs" />
     <Compile Include="Memory.cs" />
     <Compile Include="Processor.cs" />

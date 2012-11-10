@@ -6,7 +6,20 @@
     {
         public override void DrawFrame()
         {
-            throw new NotImplementedException();
+            for (int column = 0; column < Gpu.Height; column++)
+            {
+                for (int row = 0; row < Gpu.Width; row++)
+                {
+                    if (this.Gfx[row, column] == 0x0)
+                    {
+                        Console.WriteLine("*".PadLeft(column, ' '));
+                    }
+                    else
+                    {
+                        Console.WriteLine("#".PadLeft(column, ' '));
+                    }
+                }
+            }
         }
     }
 }

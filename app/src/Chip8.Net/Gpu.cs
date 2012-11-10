@@ -22,17 +22,15 @@
                 {
                     if (line[pixel] == '1')
                     {
-                        if (positionX + pixel >= Width || positionY + i >= Height)
+                        if (positionX + pixel <= Width || positionY + i <= Height)
                         {
-                            break;
-                        }
+                            if (this.Gfx[positionX + pixel, positionY + i] == 0x1)
+                            {
+                                carry = 0x1;
+                            }
 
-                        if (this.Gfx[positionX + pixel, positionY + i] == 0x1)
-                        {
-                            carry = 0x1;
+                            this.Gfx[positionX + pixel, positionY + i] ^= 0x1;
                         }
-
-                        this.Gfx[positionX + pixel, positionY + i] ^= 0x1;
                     }
                 }
             }

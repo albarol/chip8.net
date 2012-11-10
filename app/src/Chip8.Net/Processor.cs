@@ -1,6 +1,7 @@
 ﻿namespace Chip8.Net
 {
     using System;
+    using System.Globalization;
 
     public class Processor
     {
@@ -18,6 +19,7 @@
             this.RegisterV = new Register(0x10);
             this.Gpu = gpu;
             this.Keyboard = new Keyboard();
+            this.RegisterI = 0x0;
         }
 
         public Memory Memory { get; private set; }
@@ -30,146 +32,148 @@
 
         public void StepRun()
         {
-            var opcode = this.Memory[this.ProgramCounter++];
+            var decode = string.Format("{0}{1}", this.Memory[this.ProgramCounter].ToString("X"), this.Memory[this.ProgramCounter + 1].ToString("X").PadLeft(2, '0'));
+            var opcode = int.Parse(decode, NumberStyles.HexNumber);
             this.InterpretOpcode(opcode);
+            this.ProgramCounter += 2;
         }
 
         private void InterpretOpcode(int opcode)
         {
-            if (opcode == Instructions.ClearScreen)
+            if (opcode == Opcodes.ClearScreen)
             {
                 Gpu.Clear();
             }
-            else if (opcode == Instructions.ReturnRoutine)
+            else if (opcode == Opcodes.ReturnRoutine)
             {
                 this.ProgramCounter = this.stack;
                 this.stack = 0x0;
             }
-            else if ((opcode & 0xF000) == Instructions.JumpTo)
+            else if ((opcode & 0xF000) == Opcodes.JumpTo)
             {
                 this.JumpTo(opcode);
             }
-            else if ((opcode & 0xF000) == Instructions.CallRoutine)
+            else if ((opcode & 0xF000) == Opcodes.CallRoutine)
             {
                 this.CallRoutine(opcode);
             }
-            else if ((opcode & 0xF000) == Instructions.SkipNextRegisterVxEqualAddress)
+            else if ((opcode & 0xF000) == Opcodes.SkipNextRegisterVxEqualAddress)
             {
                 this.SkipNextRegisterVxEqualAddress(opcode);
             }
-            else if ((opcode & 0xF000) == Instructions.SkipNextRegisterVxNotEqualAddress)
+            else if ((opcode & 0xF000) == Opcodes.SkipNextRegisterVxNotEqualAddress)
             {
                 this.SkipNextRegisterVxNotEqualAddress(opcode);
             }
-            else if ((opcode & 0xF000) == Instructions.SkipNextRegisterVxEqualVy)
+            else if ((opcode & 0xF000) == Opcodes.SkipNextRegisterVxEqualVy)
             {
                 this.SkipNextRegisterVxEqualVy(opcode);
             }
-            else if ((opcode & 0xF000) == Instructions.SetVxToNn)
+            else if ((opcode & 0xF000) == Opcodes.SetVxToNn)
             {
                 this.SetVxToNn(opcode);
             }
-            else if ((opcode & 0xF000) == Instructions.AddNnToVx)
+            else if ((opcode & 0xF000) == Opcodes.AddNnToVx)
             {
                 this.AddNnToVx(opcode);
             }
-            else if ((opcode & 0xF00F) == Instructions.SetVxToVy)
+            else if ((opcode & 0xF00F) == Opcodes.SetVxToVy)
             {
                 this.SetVxToVy(opcode);
             }
-            else if ((opcode & 0xF00F) == Instructions.SetVxToVxOrVy)
+            else if ((opcode & 0xF00F) == Opcodes.SetVxToVxOrVy)
             {
                 this.SetVxToVxOrVy(opcode);
             }
-            else if ((opcode & 0xF00F) == Instructions.SetVxToVxAndVy)
+            else if ((opcode & 0xF00F) == Opcodes.SetVxToVxAndVy)
             {
                 this.SetVxToVxAndVy(opcode);
             }
-            else if ((opcode & 0xF00F) == Instructions.SetVxToVxXorVy)
+            else if ((opcode & 0xF00F) == Opcodes.SetVxToVxXorVy)
             {
                 this.SetVxToVxXorVy(opcode);
             }
-            else if ((opcode & 0xF00F) == Instructions.AddVyToVx)
+            else if ((opcode & 0xF00F) == Opcodes.AddVyToVx)
             {
                 this.AddVyToVx(opcode);
             }
-            else if ((opcode & 0xF00F) == Instructions.SubtractVyFromVx)
+            else if ((opcode & 0xF00F) == Opcodes.SubtractVyFromVx)
             {
                 this.SubtractVyToVx(opcode);
             }
-            else if ((opcode & 0xF00F) == Instructions.ShiftVxRightByOne)
+            else if ((opcode & 0xF00F) == Opcodes.ShiftVxRightByOne)
             {
                 this.ShiftVxRightByOne(opcode);
             }
-            else if ((opcode & 0xF00F) == Instructions.SetVxToVyMinusVx)
+            else if ((opcode & 0xF00F) == Opcodes.SetVxToVyMinusVx)
             {
                 this.SetVxToVyMinusVx(opcode);
             }
-            else if ((opcode & 0xF00F) == Instructions.ShiftVxLeftByOne)
+            else if ((opcode & 0xF00F) == Opcodes.ShiftVxLeftByOne)
             {
                 this.ShiftVxLeftByOne(opcode);
             }
-            else if ((opcode & 0xF000) == Instructions.SkipNextRegisterVxNotEqualVy)
+            else if ((opcode & 0xF000) == Opcodes.SkipNextRegisterVxNotEqualVy)
             {
                 this.SkipNextRegisterVxNotEqualVy(opcode);
             }
-            else if ((opcode & 0xF000) == Instructions.SetIToAddressNnn)
+            else if ((opcode & 0xF000) == Opcodes.SetIToAddressNnn)
             {
                 this.SetIToAddressNnn(opcode);
             }
-            else if ((opcode & 0xF000) == Instructions.JumpToPlusV0)
+            else if ((opcode & 0xF000) == Opcodes.JumpToPlusV0)
             {
                 this.JumpToPlusV0(opcode);
             }
-            else if ((opcode & 0xF000) == Instructions.SetVxRandomNumberAndNn)
+            else if ((opcode & 0xF000) == Opcodes.SetVxRandomNumberAndNn)
             {
                 this.SetVxRandomNumberAndNn(opcode);
             }
-            else if ((opcode & 0xF000) == Instructions.DrawSprite)
+            else if ((opcode & 0xF000) == Opcodes.DrawSprite)
             {
                 this.DrawSprite(opcode);
             }
-            else if ((opcode & 0xF0FF) == Instructions.SkipIfKeyInVxPressed)
+            else if ((opcode & 0xF0FF) == Opcodes.SkipIfKeyInVxPressed)
             {
                 this.SkipIfKeyInVxPressed(opcode);
             }
-            else if ((opcode & 0xF0FF) == Instructions.SkipIfKeyInVxNotPressed)
+            else if ((opcode & 0xF0FF) == Opcodes.SkipIfKeyInVxNotPressed)
             {
                 this.SkipIfKeyInVxNotPressed(opcode);
             }
-            else if ((opcode & 0xF00F) == Instructions.SetVxToDelayTimer)
+            else if ((opcode & 0xF00F) == Opcodes.SetVxToDelayTimer)
             {
                 this.SetVxToDelayTimer(opcode);
             }
-            else if ((opcode & 0xF00F) == Instructions.StoreWaitingKeyInVx)
+            else if ((opcode & 0xF00F) == Opcodes.StoreWaitingKeyInVx)
             {
                 this.StoreWaitingKeyInVx(opcode);
             }
-            else if ((opcode & 0xF0FF) == Instructions.SetDelayTimerToVx)
+            else if ((opcode & 0xF0FF) == Opcodes.SetDelayTimerToVx)
             {
                 this.SetDelayTimerToVx(opcode);
             }
-            else if ((opcode & 0xF0FF) == Instructions.SetSoundTimerToVx)
+            else if ((opcode & 0xF0FF) == Opcodes.SetSoundTimerToVx)
             {
                 this.SetSoundTimerToVx(opcode);
             }
-            else if ((opcode & 0xF0FF) == Instructions.AddVxToI)
+            else if ((opcode & 0xF0FF) == Opcodes.AddVxToI)
             {
                 this.AddVxToI(opcode);
             }
-            else if ((opcode & 0xF0FF) == Instructions.SetIToCharacterVx)
+            else if ((opcode & 0xF0FF) == Opcodes.SetIToCharacterVx)
             {
                 this.SetIToCharacterVx(opcode);
             }
-            else if ((opcode & 0xF0FF) == Instructions.StoreInVxDecimalRegisterI)
+            else if ((opcode & 0xF0FF) == Opcodes.StoreInVxDecimalRegisterI)
             {
                 this.StoreInVxDecimalRegisterI(opcode);
             }
-            else if ((opcode & 0xF0FF) == Instructions.StoreV0ToVx)
+            else if ((opcode & 0xF0FF) == Opcodes.StoreV0ToVx)
             {
                 this.StoreV0ToVx(opcode);
             }
-            else if ((opcode & 0xF0FF) == Instructions.FillV0ToVxFromMemory)
+            else if ((opcode & 0xF0FF) == Opcodes.FillV0ToVxFromMemory)
             {
                 this.FillV0ToVxFromMemory(opcode);
             }

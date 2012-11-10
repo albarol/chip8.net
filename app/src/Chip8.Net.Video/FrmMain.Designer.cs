@@ -28,23 +28,37 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.pbMonitor = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pbMonitor)).BeginInit();
             this.SuspendLayout();
+            // 
+            // pbMonitor
+            // 
+            this.pbMonitor.Location = new System.Drawing.Point(12, 12);
+            this.pbMonitor.Name = "pbMonitor";
+            this.pbMonitor.Size = new System.Drawing.Size(384, 192);
+            this.pbMonitor.TabIndex = 0;
+            this.pbMonitor.TabStop = false;
             // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.ClientSize = new System.Drawing.Size(284, 262);
+            this.ClientSize = new System.Drawing.Size(406, 269);
+            this.Controls.Add(this.pbMonitor);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FrmMain";
             this.Text = "CHIP8";
+            ((System.ComponentModel.ISupportInitialize)(this.pbMonitor)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private System.Windows.Forms.PictureBox pbMonitor;
     }
 }
 

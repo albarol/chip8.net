@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GpuFixture.cs" />
     <Compile Include="Helpers\TestGpu.cs" />
     <Compile Include="MemoryFixture.cs" />
     <Compile Include="ProcessorFixture.cs" />
