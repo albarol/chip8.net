@@ -4,13 +4,13 @@
 
     public class Memory
     {
-        private readonly int[] memory = new int[0x1000];
+        private readonly byte[] memory = new byte[0x1000];
 
         internal Memory()
         {
         }
 
-        public int this[int index]
+        public byte this[int index]
         {
             get
             {
@@ -41,7 +41,7 @@
             }
         }
 
-        public void LoadRom(int[] rom)
+        public void LoadRom(byte[] rom)
         {
             const int Position = 0x200;
             for (int i = 0x0; i < rom.Length; i++)

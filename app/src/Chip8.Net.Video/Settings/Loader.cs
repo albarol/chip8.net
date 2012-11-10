@@ -4,17 +4,13 @@
 
     public class Loader
     {
-        public static int[] LoadRom(string filename)
+        public static byte[] LoadRom(string filename)
         {
             using (var stream = new FileStream(filename, FileMode.Open))
             {
-                int[] rom = new int[stream.Length];
-                
-                for (int i = 0; i < stream.Length; i++)
-                {
-                    rom[i] = stream.ReadByte();
-                }
-                return rom;
+                byte[] buffer = new byte[stream.Length];
+                stream.Read(buffer, 0, buffer.Length);
+                return buffer;
             }
         }
     }

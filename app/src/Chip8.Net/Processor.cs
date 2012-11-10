@@ -195,6 +195,7 @@
         {
             int address = opcode & 0x0FFF;
             this.ProgramCounter = address;
+            this.ProgramCounter -= 0x2;
         }
 
         private void CallRoutine(int opcode)
@@ -352,6 +353,7 @@
         {
             int place = opcode & 0x0FFF;
             this.ProgramCounter = (ushort)(place + this.RegisterV[0x0]);
+            this.ProgramCounter -= 0x2;
         }
 
         private void SetVxRandomNumberAndNn(int opcode)
@@ -463,7 +465,7 @@
             int positionX = (opcode & 0x0F00) >> 8;
             for (int i = 0; i <= positionX; i++)
             {
-                this.Memory[this.RegisterI + i] = this.RegisterV[i];
+                this.Memory[this.RegisterI + i] = (byte)this.RegisterV[i];
             }
         }
 

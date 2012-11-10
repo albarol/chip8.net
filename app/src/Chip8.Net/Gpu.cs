@@ -22,7 +22,7 @@
                 {
                     if (line[pixel] == '1')
                     {
-                        if (positionX + pixel <= Width || positionY + i <= Height)
+                        if (positionX + pixel < Width && positionY + i < Height)
                         {
                             if (this.Gfx[positionX + pixel, positionY + i] == 0x1)
                             {
