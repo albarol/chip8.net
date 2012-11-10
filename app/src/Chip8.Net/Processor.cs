@@ -331,8 +331,7 @@
         {
             const int Carry = 0xF;
             int positionX = (opcode & 0x0F00) >> 8;
-
-            this.RegisterV[Carry] = (this.RegisterV[positionX] >> 0x80) == 0x1 ? 0x1 : 0x0;
+            this.RegisterV[Carry] = (this.RegisterV[positionX] & 0x80) >> 7 == 0x1 ? 0x1 : 0x0;
             this.RegisterV[positionX] *= 2;
         }
 
@@ -416,6 +415,7 @@
 
         private void StoreWaitingKeyInVx(int opcode)
         {
+            // TODO: FIX THIS
             int positionX = (opcode & 0x0F00) >> 8;
             while (Keyboard.WaitingForKey())
             {
