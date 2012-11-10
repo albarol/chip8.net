@@ -21,7 +21,7 @@
         private void Initialize()
         {
             this.processor = new Processor(new VideoRender(this.pbMonitor));
-            this.processor.Memory.LoadRom(Loader.LoadRom(@"E:\Github\chip8.net\roms\PUZZLE.rom"));
+            this.processor.Memory.LoadRom(Loader.LoadRom(@"E:\Github\chip8.net\roms\INVADERS.rom"));
             this.processor.Memory.LoadCharacters();
 
             this.cycleTimer = new CycleTimer

@@ -183,11 +183,13 @@
             if (this.stack != 0x0)
             {
                 this.ProgramCounter = this.stack;
-                this.stack = 0x0;    
+                this.stack = 0x0;
+                this.ProgramCounter -= 0x2;
             }
             else
             {
                 this.ProgramCounter = 0x200;
+                this.ProgramCounter -= 0x2;
             }
         }
 
