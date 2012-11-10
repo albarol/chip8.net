@@ -48,7 +48,7 @@
             this.pressedKey = this.releaseKey;
         }
         
-        public bool WaitingKey()
+        public bool WaitingForKey()
         {
             return this.LastPressedKey != this.releaseKey;
         }

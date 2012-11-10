@@ -1,19 +1,21 @@
 ﻿namespace Chip8.Net
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
+    using System.IO;
 
     public class Processor
     {
         private int delayTimer;
         private int soundTimer;
-        private int stack;
-        
+        private Stack<ushort> stack;
+
         public Processor(Gpu gpu)
         {
             this.delayTimer = 0x0;
             this.soundTimer = 0x0;
-            this.stack = 0x0;
+            this.stack = new Stack<ushort>(12);
             this.Memory = new Memory();
             this.ProgramCounter = 0x200;
             this.RegisterV = new Register(0x10);
@@ -180,10 +182,9 @@
 
         private void ReturnRoutine()
         {
-            if (this.stack != 0x0)
+            if (this.stack.Count > 0)
             {
-                this.ProgramCounter = this.stack;
-                this.stack = 0x0;
+                this.ProgramCounter = this.stack.Pop();
                 this.ProgramCounter -= 0x2;
             }
             else
@@ -203,8 +204,9 @@
         private void CallRoutine(int opcode)
         {
             int address = opcode & 0x0FFF;
-            this.stack = this.ProgramCounter;
+            this.stack.Push((ushort)(this.ProgramCounter + 0x2));
             this.ProgramCounter = address;
+            this.ProgramCounter -= 0x2;
         }
 
         private void SkipNextRegisterVxEqualAddress(int opcode)
@@ -415,7 +417,7 @@
         private void StoreWaitingKeyInVx(int opcode)
         {
             int positionX = (opcode & 0x0F00) >> 8;
-            while (Keyboard.WaitingKey())
+            while (Keyboard.WaitingForKey())
             {
             }
             this.RegisterV[positionX] = this.Keyboard.LastPressedKey;
