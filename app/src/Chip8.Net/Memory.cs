@@ -31,6 +31,8 @@
             }
         }
 
+        public int Size { get { return memory.Length; } }
+
         public void Clear()
         {
             for (int position = 0x200; position <= 0xFFF; position++)

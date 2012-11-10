@@ -13,8 +13,8 @@
         public VideoRender(PictureBox view)
         {
             this.view = view;
-            this.foreground = new SolidBrush(Color.Azure);
-            this.background = new SolidBrush(Color.Aqua);
+            this.foreground = new SolidBrush(Color.White);
+            this.background = new SolidBrush(Color.Black);
         }
         
         public override void DrawFrame()

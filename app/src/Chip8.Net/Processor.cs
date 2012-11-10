@@ -46,8 +46,7 @@
             }
             else if (opcode == Opcodes.ReturnRoutine)
             {
-                this.ProgramCounter = this.stack;
-                this.stack = 0x0;
+                this.ReturnRoutine();
             }
             else if ((opcode & 0xF000) == Opcodes.JumpTo)
             {
@@ -179,6 +178,19 @@
             }
         }
 
+        private void ReturnRoutine()
+        {
+            if (this.stack != 0x0)
+            {
+                this.ProgramCounter = this.stack;
+                this.stack = 0x0;    
+            }
+            else
+            {
+                this.ProgramCounter = 0x200;
+            }
+        }
+
         private void JumpTo(int opcode)
         {
             int address = opcode & 0x0FFF;
@@ -250,21 +262,24 @@
         {
             int positionX = (opcode & 0x0F00) >> 8;
             int positionY = (opcode & 0x00F0) >> 4 & 0x0F;
-            this.RegisterV[positionX] = this.RegisterV[positionX] | this.RegisterV[positionY];
+            this.RegisterV[positionX] |= this.RegisterV[positionY];
+            this.RegisterV[0xF] = 0;
         }
 
         private void SetVxToVxAndVy(int opcode)
         {
             int positionX = (opcode & 0x0F00) >> 8;
             int positionY = (opcode & 0x00F0) >> 4 & 0x0F;
-            this.RegisterV[positionX] = this.RegisterV[positionX] & this.RegisterV[positionY];
+            this.RegisterV[positionX] &= this.RegisterV[positionY];
+            this.RegisterV[0xF] = 0;
         }
 
         private void SetVxToVxXorVy(int opcode)
         {
             int positionX = (opcode & 0x0F00) >> 8;
             int positionY = (opcode & 0x00F0) >> 4 & 0x0F;
-            this.RegisterV[positionX] = this.RegisterV[positionX] ^ this.RegisterV[positionY];
+            this.RegisterV[positionX] ^= this.RegisterV[positionY];
+            this.RegisterV[0xF] = 0;
         }
 
         private void AddVyToVx(int opcode)
@@ -272,9 +287,10 @@
             const int Carry = 0xF;
             int positionX = (opcode & 0x0F00) >> 8;
             int positionY = (opcode & 0x00F0) >> 4 & 0x0F;
-
-            this.RegisterV[Carry] = (this.RegisterV[positionX] + this.RegisterV[positionY] > 0xFF) ? 0x1 : 0x0;
-            this.RegisterV[positionX] = (this.RegisterV[positionX] + this.RegisterV[positionY]) & 0xFF;
+            int result = this.RegisterV[positionX] + this.RegisterV[positionY];
+            
+            this.RegisterV[Carry] = (result > (int)byte.MaxValue) ? 0x1 : 0x0;
+            this.RegisterV[positionX] = (byte)result;
         }
 
         private void SubtractVyToVx(int opcode)
@@ -282,9 +298,9 @@
             const int Carry = 0xF;
             int positionX = (opcode & 0x0F00) >> 8;
             int positionY = (opcode & 0x00F0) >> 4 & 0x0F;
-
+            
             this.RegisterV[Carry] = (this.RegisterV[positionX] > this.RegisterV[positionY]) ? 0x1 : 0x0;
-            this.RegisterV[positionX] = this.RegisterV[positionX] - this.RegisterV[positionY];
+            this.RegisterV[positionX] -= this.RegisterV[positionY];
         }
 
         private void ShiftVxRightByOne(int opcode)
@@ -293,7 +309,7 @@
             int positionX = (opcode & 0x0F00) >> 8;
 
             this.RegisterV[Carry] = (this.RegisterV[positionX] & 0x1) == 0x1 ? 0x1 : 0x0;
-            this.RegisterV[positionX] = this.RegisterV[positionX] >> 0x1;
+            this.RegisterV[positionX] /= 2;
         }
 
         private void SetVxToVyMinusVx(int opcode)
@@ -303,7 +319,7 @@
             int positionY = (opcode & 0x00F0) >> 4;
 
             this.RegisterV[Carry] = (this.RegisterV[positionY] >= this.RegisterV[positionX]) ? 0x1 : 0x0;
-            this.RegisterV[positionX] = this.RegisterV[positionY] - this.RegisterV[positionY];
+            this.RegisterV[positionX] = (byte)(this.RegisterV[positionY] - this.RegisterV[positionX]);
         }
 
         private void ShiftVxLeftByOne(int opcode)
@@ -311,8 +327,8 @@
             const int Carry = 0xF;
             int positionX = (opcode & 0x0F00) >> 8;
 
-            this.RegisterV[Carry] = (this.RegisterV[positionX] >> 0x7) == 0x1 ? 0x1 : 0x0;
-            this.RegisterV[positionX] = this.RegisterV[positionX] << 0x1 & 0xFF;
+            this.RegisterV[Carry] = (this.RegisterV[positionX] >> 0x80) == 0x1 ? 0x1 : 0x0;
+            this.RegisterV[positionX] *= 2;
         }
 
         private void SkipNextRegisterVxNotEqualVy(int opcode)
@@ -335,7 +351,7 @@
         private void JumpToPlusV0(int opcode)
         {
             int place = opcode & 0x0FFF;
-            this.ProgramCounter = place + this.RegisterV[0x0];
+            this.ProgramCounter = (ushort)(place + this.RegisterV[0x0]);
         }
 
         private void SetVxRandomNumberAndNn(int opcode)
@@ -343,7 +359,7 @@
             var rnd = new Random();
             int positionX = (opcode & 0x0F00) >> 8;
             int place = opcode & 0x00FF;
-            this.RegisterV[positionX] = rnd.Next(0x100) & place;
+            this.RegisterV[positionX] = (byte)(rnd.Next(255) & place);
         }
 
         private void DrawSprite(int opcode)
@@ -384,7 +400,12 @@
         private void SetVxToDelayTimer(int opcode)
         {
             int positionX = (opcode & 0x0F00) >> 8;
-            this.delayTimer = this.RegisterV[positionX];
+            if (this.delayTimer < 0)
+            {
+                this.delayTimer = 0;
+            }
+
+            this.RegisterV[positionX] = (byte)this.delayTimer;
         }
 
         private void StoreWaitingKeyInVx(int opcode)
@@ -399,37 +420,42 @@
         private void SetDelayTimerToVx(int opcode)
         {
             int positionX = (opcode & 0x0F00) >> 8;
-            this.RegisterV[positionX] = this.delayTimer;
+            this.delayTimer = this.RegisterV[positionX];
         }
 
         private void SetSoundTimerToVx(int opcode)
         {
             int positionX = (opcode & 0x0F00) >> 8;
-            this.RegisterV[positionX] = this.soundTimer;
+            this.soundTimer = this.RegisterV[positionX];
         }
 
         private void AddVxToI(int opcode)
         {
             int positionX = (opcode & 0x0F00) >> 8;
-            this.RegisterI += this.RegisterV[positionX];
-            this.RegisterV[0xF] = (this.RegisterI > 0xFFF) ? 0x1 : 0x0;
-            this.RegisterI = this.RegisterI & 0xFFF;
+            if (this.RegisterI + this.RegisterV[positionX] >= 0x1000)
+            {
+                this.RegisterI = (ushort)Memory.Size;
+                this.RegisterV[0xF] = 1;
+            }
+            else
+            {
+                this.RegisterI += this.RegisterV[positionX];
+            }
         }
         
         private void SetIToCharacterVx(int opcode)
         {
             int positionX = (opcode & 0x0F00) >> 8;
-            this.RegisterI = Character.GetCharacter(this.RegisterV[positionX]);
+            this.RegisterI = this.RegisterV[positionX] * 5;
         }
 
         private void StoreInVxDecimalRegisterI(int opcode)
         {
             int positionX = (opcode & 0x0FFF) >> 8;
-            string representation = (this.RegisterV[positionX] & 0xFFF).ToString("D3");
-            
-            this.Memory[this.RegisterI] = Convert.ToInt32(representation[0].ToString());
-            this.Memory[this.RegisterI + 1] = Convert.ToInt32(representation[1].ToString());
-            this.Memory[this.RegisterI + 2] = Convert.ToInt32(representation[2].ToString());
+            byte val = (byte)this.RegisterV[positionX];
+            this.Memory[this.RegisterI] = (byte)(val / 100);
+            this.Memory[this.RegisterI + 1] = (byte)((val % 100) / 10);
+            this.Memory[this.RegisterI + 2] = (byte)((val % 100) % 10);
         }
 
         private void StoreV0ToVx(int opcode)
