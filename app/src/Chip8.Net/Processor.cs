@@ -11,6 +11,8 @@
         private int soundTimer;
         private Stack<ushort> stack;
 
+        private StreamWriter writer;
+
         public Processor(Gpu gpu)
         {
             this.delayTimer = 0x0;
@@ -22,6 +24,7 @@
             this.Gpu = gpu;
             this.Keyboard = new Keyboard();
             this.RegisterI = 0x0;
+            this.writer = new StreamWriter("memdump.txt");
         }
 
         public Memory Memory { get; private set; }
@@ -36,6 +39,7 @@
         {
             var decode = string.Format("{0}{1}", this.Memory[this.ProgramCounter].ToString("X"), this.Memory[this.ProgramCounter + 1].ToString("X").PadLeft(2, '0'));
             var opcode = int.Parse(decode, NumberStyles.HexNumber);
+            this.writer.WriteLine("{0} - {1} - {2}", decode, this.ProgramCounter, this.RegisterV);
             this.InterpretOpcode(opcode);
             this.ProgramCounter += 2;
         }
@@ -211,10 +215,10 @@
 
         private void SkipNextRegisterVxEqualAddress(int opcode)
         {
-            int position = opcode & 0x00FF;
-            int register = (opcode & 0x0F00) >> 8;
+            int address = opcode & 0x00FF;
+            int positionX = (opcode & 0x0F00) >> 8;
             
-            if (this.RegisterV[register] == position)
+            if (this.RegisterV[positionX] == address)
             {
                 this.ProgramCounter += 0x2;
             }
@@ -222,10 +226,10 @@
 
         private void SkipNextRegisterVxNotEqualAddress(int opcode)
         {
-            int position = opcode & 0x00FF;
-            int register = (opcode & 0x0F00) >> 8;
+            int address = opcode & 0x00FF;
+            int positionX = (opcode & 0x0F00) >> 8;
 
-            if (this.RegisterV[register] != position)
+            if (this.RegisterV[positionX] != address)
             {
                 this.ProgramCounter += 0x2;
             }
@@ -244,16 +248,16 @@
 
         private void SetVxToNn(int opcode)
         {
-            int position = opcode & 0x00FF;
-            int register = (opcode & 0x0F00) >> 8;
-            this.RegisterV[register] = position;
+            int address = opcode & 0x00FF;
+            int positionX = (opcode & 0x0F00) >> 8;
+            this.RegisterV[positionX] = (byte)address;
         }
 
         private void AddNnToVx(int opcode)
         {
-            int position = opcode & 0x00FF;
-            int register = (opcode & 0x0F00) >> 8;
-            this.RegisterV[register] += position;
+            int address = opcode & 0x00FF;
+            int positionX = (opcode & 0x0F00) >> 8;
+            this.RegisterV[positionX] += (byte)address;
         }
 
         private void SetVxToVy(int opcode)
@@ -293,8 +297,8 @@
             int positionX = (opcode & 0x0F00) >> 8;
             int positionY = (opcode & 0x00F0) >> 4 & 0x0F;
             int result = this.RegisterV[positionX] + this.RegisterV[positionY];
-            
-            this.RegisterV[Carry] = (result > (int)byte.MaxValue) ? 0x1 : 0x0;
+
+            this.RegisterV[Carry] = (byte)((result > (int)byte.MaxValue) ? 0x1 : 0x0);
             this.RegisterV[positionX] = (byte)result;
         }
 
@@ -303,8 +307,8 @@
             const int Carry = 0xF;
             int positionX = (opcode & 0x0F00) >> 8;
             int positionY = (opcode & 0x00F0) >> 4 & 0x0F;
-            
-            this.RegisterV[Carry] = (this.RegisterV[positionX] > this.RegisterV[positionY]) ? 0x1 : 0x0;
+
+            this.RegisterV[Carry] = (byte)((this.RegisterV[positionX] > this.RegisterV[positionY]) ? 0x1 : 0x0);
             this.RegisterV[positionX] -= this.RegisterV[positionY];
         }
 
@@ -313,7 +317,7 @@
             const int Carry = 0xF;
             int positionX = (opcode & 0x0F00) >> 8;
 
-            this.RegisterV[Carry] = (this.RegisterV[positionX] & 0x1) == 0x1 ? 0x1 : 0x0;
+            this.RegisterV[Carry] = (byte)((this.RegisterV[positionX] & 0x1) == 0x1 ? 0x1 : 0x0);
             this.RegisterV[positionX] /= 2;
         }
 
@@ -323,7 +327,7 @@
             int positionX = (opcode & 0x0F00) >> 8;
             int positionY = (opcode & 0x00F0) >> 4;
 
-            this.RegisterV[Carry] = (this.RegisterV[positionY] >= this.RegisterV[positionX]) ? 0x1 : 0x0;
+            this.RegisterV[Carry] = (byte)((this.RegisterV[positionY] >= this.RegisterV[positionX]) ? 0x1 : 0x0);
             this.RegisterV[positionX] = (byte)(this.RegisterV[positionY] - this.RegisterV[positionX]);
         }
 
@@ -331,7 +335,7 @@
         {
             const int Carry = 0xF;
             int positionX = (opcode & 0x0F00) >> 8;
-            this.RegisterV[Carry] = (this.RegisterV[positionX] & 0x80) >> 7 == 0x1 ? 0x1 : 0x0;
+            this.RegisterV[Carry] = (byte)((this.RegisterV[positionX] & 0x80) >> 7 == 0x1 ? 0x1 : 0x0);
             this.RegisterV[positionX] *= 2;
         }
 
@@ -380,7 +384,7 @@
             {
                 sprite[count++] = this.Memory[index];
             }
-            this.RegisterV[Carry] = this.Gpu.Draw(this.RegisterV[positionX], this.RegisterV[positionY], sprite);
+            this.RegisterV[Carry] = (byte)this.Gpu.Draw(this.RegisterV[positionX], this.RegisterV[positionY], sprite);
             this.Gpu.DrawFrame();
         }
 
@@ -420,7 +424,7 @@
             while (Keyboard.WaitingForKey())
             {
             }
-            this.RegisterV[positionX] = this.Keyboard.LastPressedKey;
+            this.RegisterV[positionX] = (byte)this.Keyboard.LastPressedKey;
         }
 
         private void SetDelayTimerToVx(int opcode)
@@ -452,7 +456,7 @@
         private void SetIToCharacterVx(int opcode)
         {
             int positionX = (opcode & 0x0F00) >> 8;
-            this.RegisterI = this.RegisterV[positionX] * 5;
+            this.RegisterI = (ushort)this.RegisterV[positionX] * 5;
         }
 
         private void StoreInVxDecimalRegisterI(int opcode)

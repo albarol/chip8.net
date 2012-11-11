@@ -24,7 +24,7 @@
         private void Initialize()
         {
             this.processor = new Processor(new VideoRender(this.pbMonitor));
-            this.processor.Memory.LoadRom(Loader.LoadRom(@"file_path.rom"));
+            this.processor.Memory.LoadRom(Loader.LoadRom(@"E:\Github\chip8.net\roms\INVADERS.rom"));
             this.processor.Memory.LoadCharacters();
 
             this.cycleTimer = new CycleTimer
@@ -34,14 +34,14 @@
                 AutoReset = true
             };
             this.cycleTimer.Elapsed += this.CycleProcess;
-            this.KeyPress += FrmKeyPress;
-            this.KeyUp += FrmKeyRelease;
+            this.KeyPress += this.FrmKeyPress;
+            //this.KeyUp += this.FrmKeyRelease;
         }
 
-        private void FrmKeyRelease(object sender, KeyEventArgs e)
-        {
-            this.processor.Keyboard.ReleaseKey();
-        }
+        //private void FrmKeyRelease(object sender, KeyEventArgs e)
+        //{
+        //    this.processor.Keyboard.ReleaseKey();
+        //}
 
         private void FrmKeyPress(object sender, KeyPressEventArgs e)
         {

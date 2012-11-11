@@ -1,17 +1,18 @@
 ﻿namespace Chip8.Net
 {
     using System;
+    using System.Text;
 
     public class Register
     {
-        private readonly int[] register;
+        private readonly byte[] register;
 
         public Register(int size)
         {
-            this.register = new int[size];
+            this.register = new byte[size];
         }
 
-        public int this[int index]
+        public byte this[int index]
         {
             get
             {
@@ -38,6 +39,17 @@
             {
                 this.register[position] = 0x0;
             }
+        }
+
+        public override string ToString()
+        {
+            StringBuilder builder = new StringBuilder("{");
+            for(int i = 0; i < register.Length; i++)
+            {
+                builder.AppendFormat("{0}, ", register[i]);
+            }
+            builder.Append("}");
+            return builder.ToString();
         }
     }
 }
