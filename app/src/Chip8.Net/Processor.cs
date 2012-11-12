@@ -37,150 +37,149 @@
 
         public void StepRun()
         {
-            var decode = string.Format("{0}{1}", this.Memory[this.ProgramCounter].ToString("X"), this.Memory[this.ProgramCounter + 1].ToString("X").PadLeft(2, '0'));
-            var opcode = int.Parse(decode, NumberStyles.HexNumber);
-            this.writer.WriteLine("{0} - {1} - {2}", decode, this.ProgramCounter, this.RegisterV);
-            this.InterpretOpcode(opcode);
+            var instruction = Decoder.DecodeOpcode(this.Memory[this.ProgramCounter], this.Memory[this.ProgramCounter + 1]);
+            this.writer.WriteLine("{0} - {1} - {2}", instruction.Routine, this.ProgramCounter, this.RegisterV);
             this.ProgramCounter += 2;
+            this.InterpretOpcode(instruction);
         }
 
-        private void InterpretOpcode(int opcode)
+        private void InterpretOpcode(Instruction instruction)
         {
-            if (opcode == Opcodes.ClearScreen)
+            if (instruction.Opcode == Opcodes.ClearScreen)
             {
                 Gpu.Clear();
             }
-            else if (opcode == Opcodes.ReturnRoutine)
+            else if (instruction.Opcode == Opcodes.ReturnRoutine)
             {
                 this.ReturnRoutine();
             }
-            else if ((opcode & 0xF000) == Opcodes.JumpTo)
+            else if (instruction.Opcode == Opcodes.JumpTo)
             {
-                this.JumpTo(opcode);
+                this.JumpTo(instruction);
             }
-            else if ((opcode & 0xF000) == Opcodes.CallRoutine)
+            else if (instruction.Opcode == Opcodes.CallRoutine)
             {
-                this.CallRoutine(opcode);
+                this.CallRoutine(instruction);
             }
-            else if ((opcode & 0xF000) == Opcodes.SkipNextRegisterVxEqualAddress)
+            else if (instruction.Opcode == Opcodes.SkipNextRegisterVxEqualAddress)
             {
-                this.SkipNextRegisterVxEqualAddress(opcode);
+                this.SkipNextRegisterVxEqualAddress(instruction);
             }
-            else if ((opcode & 0xF000) == Opcodes.SkipNextRegisterVxNotEqualAddress)
+            else if (instruction.Opcode == Opcodes.SkipNextRegisterVxNotEqualAddress)
             {
-                this.SkipNextRegisterVxNotEqualAddress(opcode);
+                this.SkipNextRegisterVxNotEqualAddress(instruction);
             }
-            else if ((opcode & 0xF000) == Opcodes.SkipNextRegisterVxEqualVy)
+            else if (instruction.Opcode == Opcodes.SkipNextRegisterVxEqualVy)
             {
-                this.SkipNextRegisterVxEqualVy(opcode);
+                this.SkipNextRegisterVxEqualVy(instruction);
             }
-            else if ((opcode & 0xF000) == Opcodes.SetVxToNn)
+            else if (instruction.Opcode == Opcodes.SetVxToNn)
             {
-                this.SetVxToNn(opcode);
+                this.SetVxToNn(instruction);
             }
-            else if ((opcode & 0xF000) == Opcodes.AddNnToVx)
+            else if (instruction.Opcode == Opcodes.AddNnToVx)
             {
-                this.AddNnToVx(opcode);
+                this.AddNnToVx(instruction);
             }
-            else if ((opcode & 0xF00F) == Opcodes.SetVxToVy)
+            else if (instruction.Opcode == Opcodes.SetVxToVy)
             {
-                this.SetVxToVy(opcode);
+                this.SetVxToVy(instruction);
             }
-            else if ((opcode & 0xF00F) == Opcodes.SetVxToVxOrVy)
+            else if (instruction.Opcode == Opcodes.SetVxToVxOrVy)
             {
-                this.SetVxToVxOrVy(opcode);
+                this.SetVxToVxOrVy(instruction);
             }
-            else if ((opcode & 0xF00F) == Opcodes.SetVxToVxAndVy)
+            else if (instruction.Opcode == Opcodes.SetVxToVxAndVy)
             {
-                this.SetVxToVxAndVy(opcode);
+                this.SetVxToVxAndVy(instruction);
             }
-            else if ((opcode & 0xF00F) == Opcodes.SetVxToVxXorVy)
+            else if (instruction.Opcode == Opcodes.SetVxToVxXorVy)
             {
-                this.SetVxToVxXorVy(opcode);
+                this.SetVxToVxXorVy(instruction);
             }
-            else if ((opcode & 0xF00F) == Opcodes.AddVyToVx)
+            else if (instruction.Opcode == Opcodes.AddVyToVx)
             {
-                this.AddVyToVx(opcode);
+                this.AddVyToVx(instruction);
             }
-            else if ((opcode & 0xF00F) == Opcodes.SubtractVyFromVx)
+            else if (instruction.Opcode == Opcodes.SubtractVyFromVx)
             {
-                this.SubtractVyToVx(opcode);
+                this.SubtractVyToVx(instruction);
             }
-            else if ((opcode & 0xF00F) == Opcodes.ShiftVxRightByOne)
+            else if (instruction.Opcode == Opcodes.ShiftVxRightByOne)
             {
-                this.ShiftVxRightByOne(opcode);
+                this.ShiftVxRightByOne(instruction);
             }
-            else if ((opcode & 0xF00F) == Opcodes.SetVxToVyMinusVx)
+            else if (instruction.Opcode == Opcodes.SetVxToVyMinusVx)
             {
-                this.SetVxToVyMinusVx(opcode);
+                this.SetVxToVyMinusVx(instruction);
             }
-            else if ((opcode & 0xF00F) == Opcodes.ShiftVxLeftByOne)
+            else if (instruction.Opcode == Opcodes.ShiftVxLeftByOne)
             {
-                this.ShiftVxLeftByOne(opcode);
+                this.ShiftVxLeftByOne(instruction);
             }
-            else if ((opcode & 0xF000) == Opcodes.SkipNextRegisterVxNotEqualVy)
+            else if (instruction.Opcode == Opcodes.SkipNextRegisterVxNotEqualVy)
             {
-                this.SkipNextRegisterVxNotEqualVy(opcode);
+                this.SkipNextRegisterVxNotEqualVy(instruction);
             }
-            else if ((opcode & 0xF000) == Opcodes.SetIToAddressNnn)
+            else if (instruction.Opcode == Opcodes.SetIToAddressNnn)
             {
-                this.SetIToAddressNnn(opcode);
+                this.SetIToAddressNnn(instruction);
             }
-            else if ((opcode & 0xF000) == Opcodes.JumpToPlusV0)
+            else if (instruction.Opcode == Opcodes.JumpToPlusV0)
             {
-                this.JumpToPlusV0(opcode);
+                this.JumpToPlusV0(instruction);
             }
-            else if ((opcode & 0xF000) == Opcodes.SetVxRandomNumberAndNn)
+            else if (instruction.Opcode == Opcodes.SetVxRandomNumberAndNn)
             {
-                this.SetVxRandomNumberAndNn(opcode);
+                this.SetVxRandomNumberAndNn(instruction);
             }
-            else if ((opcode & 0xF000) == Opcodes.DrawSprite)
+            else if (instruction.Opcode == Opcodes.DrawSprite)
             {
-                this.DrawSprite(opcode);
+                this.DrawSprite(instruction);
             }
-            else if ((opcode & 0xF0FF) == Opcodes.SkipIfKeyInVxPressed)
+            else if (instruction.Opcode == Opcodes.SkipIfKeyInVxPressed)
             {
-                this.SkipIfKeyInVxPressed(opcode);
+                this.SkipIfKeyInVxPressed(instruction);
             }
-            else if ((opcode & 0xF0FF) == Opcodes.SkipIfKeyInVxNotPressed)
+            else if (instruction.Opcode == Opcodes.SkipIfKeyInVxNotPressed)
             {
-                this.SkipIfKeyInVxNotPressed(opcode);
+                this.SkipIfKeyInVxNotPressed(instruction);
             }
-            else if ((opcode & 0xF00F) == Opcodes.SetVxToDelayTimer)
+            else if (instruction.Opcode == Opcodes.SetVxToDelayTimer)
             {
-                this.SetVxToDelayTimer(opcode);
+                this.SetVxToDelayTimer(instruction);
             }
-            else if ((opcode & 0xF00F) == Opcodes.StoreWaitingKeyInVx)
+            else if (instruction.Opcode == Opcodes.StoreWaitingKeyInVx)
             {
-                this.StoreWaitingKeyInVx(opcode);
+                this.StoreWaitingKeyInVx(instruction);
             }
-            else if ((opcode & 0xF0FF) == Opcodes.SetDelayTimerToVx)
+            else if (instruction.Opcode == Opcodes.SetDelayTimerToVx)
             {
-                this.SetDelayTimerToVx(opcode);
+                this.SetDelayTimerToVx(instruction);
             }
-            else if ((opcode & 0xF0FF) == Opcodes.SetSoundTimerToVx)
+            else if (instruction.Opcode == Opcodes.SetSoundTimerToVx)
             {
-                this.SetSoundTimerToVx(opcode);
+                this.SetSoundTimerToVx(instruction);
             }
-            else if ((opcode & 0xF0FF) == Opcodes.AddVxToI)
+            else if (instruction.Opcode == Opcodes.AddVxToI)
             {
-                this.AddVxToI(opcode);
+                this.AddVxToI(instruction);
             }
-            else if ((opcode & 0xF0FF) == Opcodes.SetIToCharacterVx)
+            else if (instruction.Opcode == Opcodes.SetIToCharacterVx)
             {
-                this.SetIToCharacterVx(opcode);
+                this.SetIToCharacterVx(instruction);
             }
-            else if ((opcode & 0xF0FF) == Opcodes.StoreInVxDecimalRegisterI)
+            else if (instruction.Opcode == Opcodes.StoreInVxDecimalRegisterI)
             {
-                this.StoreInVxDecimalRegisterI(opcode);
+                this.StoreInVxDecimalRegisterI(instruction);
             }
-            else if ((opcode & 0xF0FF) == Opcodes.StoreV0ToVx)
+            else if (instruction.Opcode == Opcodes.StoreV0ToVx)
             {
-                this.StoreV0ToVx(opcode);
+                this.StoreV0ToVx(instruction);
             }
-            else if ((opcode & 0xF0FF) == Opcodes.FillV0ToVxFromMemory)
+            else if (instruction.Opcode == Opcodes.FillV0ToVxFromMemory)
             {
-                this.FillV0ToVxFromMemory(opcode);
+                this.FillV0ToVxFromMemory(instruction);
             }
         }
 
@@ -189,194 +188,146 @@
             if (this.stack.Count > 0)
             {
                 this.ProgramCounter = this.stack.Pop();
-                this.ProgramCounter -= 0x2;
             }
             else
             {
                 this.ProgramCounter = 0x200;
-                this.ProgramCounter -= 0x2;
             }
         }
 
-        private void JumpTo(int opcode)
+        private void JumpTo(Instruction instruction)
         {
-            int address = opcode & 0x0FFF;
-            this.ProgramCounter = address;
-            this.ProgramCounter -= 0x2;
+            this.ProgramCounter = instruction.Nnn;
         }
 
-        private void CallRoutine(int opcode)
+        private void CallRoutine(Instruction instruction)
         {
-            int address = opcode & 0x0FFF;
-            this.stack.Push((ushort)(this.ProgramCounter + 0x2));
-            this.ProgramCounter = address;
-            this.ProgramCounter -= 0x2;
+            this.stack.Push((ushort)this.ProgramCounter);
+            this.ProgramCounter = instruction.Nnn;
         }
 
-        private void SkipNextRegisterVxEqualAddress(int opcode)
+        private void SkipNextRegisterVxEqualAddress(Instruction instruction)
         {
-            int address = opcode & 0x00FF;
-            int positionX = (opcode & 0x0F00) >> 8;
-            
-            if (this.RegisterV[positionX] == address)
+            if (this.RegisterV[instruction.X] == instruction.Nn)
             {
                 this.ProgramCounter += 0x2;
             }
         }
 
-        private void SkipNextRegisterVxNotEqualAddress(int opcode)
+        private void SkipNextRegisterVxNotEqualAddress(Instruction instruction)
         {
-            int address = opcode & 0x00FF;
-            int positionX = (opcode & 0x0F00) >> 8;
-
-            if (this.RegisterV[positionX] != address)
+            if (this.RegisterV[instruction.X] != instruction.Nn)
             {
                 this.ProgramCounter += 0x2;
             }
         }
 
-        private void SkipNextRegisterVxEqualVy(int opcode)
+        private void SkipNextRegisterVxEqualVy(Instruction instruction)
         {
-            int positionX = (opcode & 0x0F00) >> 8;
-            int positionY = (opcode & 0x00F0) >> 4;
-
-            if (this.RegisterV[positionX] == this.RegisterV[positionY])
+            if (this.RegisterV[instruction.X] == this.RegisterV[instruction.Y])
             {
                 this.ProgramCounter += 0x2;
             }
         }
 
-        private void SetVxToNn(int opcode)
+        private void SetVxToNn(Instruction instruction)
         {
-            int address = opcode & 0x00FF;
-            int positionX = (opcode & 0x0F00) >> 8;
-            this.RegisterV[positionX] = (byte)address;
+            this.RegisterV[instruction.X] = (byte)instruction.Nn;
         }
 
-        private void AddNnToVx(int opcode)
+        private void AddNnToVx(Instruction instruction)
         {
-            int address = opcode & 0x00FF;
-            int positionX = (opcode & 0x0F00) >> 8;
-            this.RegisterV[positionX] += (byte)address;
+            this.RegisterV[instruction.X] += (byte)instruction.Nn;
         }
 
-        private void SetVxToVy(int opcode)
+        private void SetVxToVy(Instruction instruction)
         {
-            int positionX = (opcode & 0x0F00) >> 8;
-            int positionY = (opcode & 0x00F0) >> 4;
-            this.RegisterV[positionX] = this.RegisterV[positionY];
+            this.RegisterV[instruction.X] = this.RegisterV[instruction.Y];
         }
 
-        private void SetVxToVxOrVy(int opcode)
+        private void SetVxToVxOrVy(Instruction instruction)
         {
-            int positionX = (opcode & 0x0F00) >> 8;
-            int positionY = (opcode & 0x00F0) >> 4 & 0x0F;
-            this.RegisterV[positionX] |= this.RegisterV[positionY];
+            this.RegisterV[instruction.X] |= this.RegisterV[instruction.Y];
             this.RegisterV[0xF] = 0;
         }
 
-        private void SetVxToVxAndVy(int opcode)
+        private void SetVxToVxAndVy(Instruction instruction)
         {
-            int positionX = (opcode & 0x0F00) >> 8;
-            int positionY = (opcode & 0x00F0) >> 4 & 0x0F;
-            this.RegisterV[positionX] &= this.RegisterV[positionY];
+            this.RegisterV[instruction.X] &= this.RegisterV[instruction.Y];
             this.RegisterV[0xF] = 0;
         }
 
-        private void SetVxToVxXorVy(int opcode)
+        private void SetVxToVxXorVy(Instruction instruction)
         {
-            int positionX = (opcode & 0x0F00) >> 8;
-            int positionY = (opcode & 0x00F0) >> 4 & 0x0F;
-            this.RegisterV[positionX] ^= this.RegisterV[positionY];
+            this.RegisterV[instruction.X] ^= this.RegisterV[instruction.Y];
             this.RegisterV[0xF] = 0;
         }
 
-        private void AddVyToVx(int opcode)
+        private void AddVyToVx(Instruction instruction)
         {
             const int Carry = 0xF;
-            int positionX = (opcode & 0x0F00) >> 8;
-            int positionY = (opcode & 0x00F0) >> 4 & 0x0F;
-            int result = this.RegisterV[positionX] + this.RegisterV[positionY];
+            int result = this.RegisterV[instruction.X] + this.RegisterV[instruction.Y];
 
             this.RegisterV[Carry] = (byte)((result > (int)byte.MaxValue) ? 0x1 : 0x0);
-            this.RegisterV[positionX] = (byte)result;
+            this.RegisterV[instruction.X] = (byte)result;
         }
 
-        private void SubtractVyToVx(int opcode)
+        private void SubtractVyToVx(Instruction instruction)
         {
             const int Carry = 0xF;
-            int positionX = (opcode & 0x0F00) >> 8;
-            int positionY = (opcode & 0x00F0) >> 4 & 0x0F;
-
-            this.RegisterV[Carry] = (byte)((this.RegisterV[positionX] > this.RegisterV[positionY]) ? 0x1 : 0x0);
-            this.RegisterV[positionX] -= this.RegisterV[positionY];
+            this.RegisterV[Carry] = (byte)((this.RegisterV[instruction.X] > this.RegisterV[instruction.Y]) ? 0x1 : 0x0);
+            this.RegisterV[instruction.X] -= this.RegisterV[instruction.Y];
         }
 
-        private void ShiftVxRightByOne(int opcode)
+        private void ShiftVxRightByOne(Instruction instruction)
         {
             const int Carry = 0xF;
-            int positionX = (opcode & 0x0F00) >> 8;
-
-            this.RegisterV[Carry] = (byte)((this.RegisterV[positionX] & 0x1) == 0x1 ? 0x1 : 0x0);
-            this.RegisterV[positionX] /= 2;
+            this.RegisterV[Carry] = (byte)((this.RegisterV[instruction.X] & 0x1) == 0x1 ? 0x1 : 0x0);
+            this.RegisterV[instruction.X] /= 2;
         }
 
-        private void SetVxToVyMinusVx(int opcode)
+        private void SetVxToVyMinusVx(Instruction instruction)
         {
             const int Carry = 0xF;
-            int positionX = (opcode & 0x0F00) >> 8;
-            int positionY = (opcode & 0x00F0) >> 4;
-
-            this.RegisterV[Carry] = (byte)((this.RegisterV[positionY] >= this.RegisterV[positionX]) ? 0x1 : 0x0);
-            this.RegisterV[positionX] = (byte)(this.RegisterV[positionY] - this.RegisterV[positionX]);
+            this.RegisterV[Carry] = (byte)((this.RegisterV[instruction.Y] >= this.RegisterV[instruction.X]) ? 0x1 : 0x0);
+            this.RegisterV[instruction.X] = (byte)(this.RegisterV[instruction.Y] - this.RegisterV[instruction.X]);
         }
 
-        private void ShiftVxLeftByOne(int opcode)
+        private void ShiftVxLeftByOne(Instruction instruction)
         {
             const int Carry = 0xF;
-            int positionX = (opcode & 0x0F00) >> 8;
-            this.RegisterV[Carry] = (byte)((this.RegisterV[positionX] & 0x80) >> 7 == 0x1 ? 0x1 : 0x0);
-            this.RegisterV[positionX] *= 2;
+            this.RegisterV[Carry] = (byte)((this.RegisterV[instruction.X] & 0x80) >> 7 == 0x1 ? 0x1 : 0x0);
+            this.RegisterV[instruction.X] *= 2;
         }
 
-        private void SkipNextRegisterVxNotEqualVy(int opcode)
+        private void SkipNextRegisterVxNotEqualVy(Instruction instruction)
         {
-            int positionX = (opcode & 0x0F00) >> 8;
-            int positionY = (opcode & 0x00F0) >> 4;
-
-            if (this.RegisterV[positionX] != this.RegisterV[positionY])
+            if (this.RegisterV[instruction.X] != this.RegisterV[instruction.Y])
             {
                 this.ProgramCounter += 0x2;
             }
         }
 
-        private void SetIToAddressNnn(int opcode)
+        private void SetIToAddressNnn(Instruction instruction)
         {
-            int place = opcode & 0x0FFF;
-            this.RegisterI = place;
+            this.RegisterI = instruction.Nnn;
         }
 
-        private void JumpToPlusV0(int opcode)
+        private void JumpToPlusV0(Instruction instruction)
         {
-            int place = opcode & 0x0FFF;
-            this.ProgramCounter = (ushort)(place + this.RegisterV[0x0]);
-            this.ProgramCounter -= 0x2;
+            this.ProgramCounter = (ushort)(instruction.Nnn + this.RegisterV[0x0]);
         }
 
-        private void SetVxRandomNumberAndNn(int opcode)
+        private void SetVxRandomNumberAndNn(Instruction instruction)
         {
             var rnd = new Random();
-            int positionX = (opcode & 0x0F00) >> 8;
-            int place = opcode & 0x00FF;
-            this.RegisterV[positionX] = (byte)(rnd.Next(255) & place);
+            this.RegisterV[instruction.X] = (byte)(rnd.Next(255) & instruction.Nn);
         }
 
-        private void DrawSprite(int opcode)
+        private void DrawSprite(Instruction instruction)
         {
             const int Carry = 0xF;
-            int positionX = (opcode & 0x0F00) >> 8;
-            int positionY = (opcode & 0x00F0) >> 4;
-            int size = opcode & 0x000F;
+            int size = instruction.N;
 
             int[] sprite = new int[size];
             int count = 0;
@@ -384,103 +335,92 @@
             {
                 sprite[count++] = this.Memory[index];
             }
-            this.RegisterV[Carry] = (byte)this.Gpu.Draw(this.RegisterV[positionX], this.RegisterV[positionY], sprite);
+            this.RegisterV[Carry] = (byte)this.Gpu.Draw(this.RegisterV[instruction.X], this.RegisterV[instruction.Y], sprite);
             this.Gpu.DrawFrame();
         }
 
-        private void SkipIfKeyInVxPressed(int opcode)
+        private void SkipIfKeyInVxPressed(Instruction instruction)
         {
-            int positionX = (opcode & 0x0F00) >> 8;
-            if (this.RegisterV[positionX] == Keyboard.LastPressedKey)
+            if (this.RegisterV[instruction.X] == Keyboard.LastPressedKey)
             {
                 this.ProgramCounter += 0x2;
             }
         }
 
-        private void SkipIfKeyInVxNotPressed(int opcode)
+        private void SkipIfKeyInVxNotPressed(Instruction instruction)
         {
-            int positionX = (opcode & 0x0F00) >> 8;
-            if (this.RegisterV[positionX] != Keyboard.LastPressedKey)
+            if (this.RegisterV[instruction.X] != Keyboard.LastPressedKey)
             {
                 this.ProgramCounter += 0x2;
             }
         }
 
-        private void SetVxToDelayTimer(int opcode)
+        private void SetVxToDelayTimer(Instruction instruction)
         {
-            int positionX = (opcode & 0x0F00) >> 8;
             if (this.delayTimer < 0)
             {
                 this.delayTimer = 0;
             }
 
-            this.RegisterV[positionX] = (byte)this.delayTimer;
+            this.RegisterV[instruction.X] = (byte)this.delayTimer;
         }
 
-        private void StoreWaitingKeyInVx(int opcode)
+        private void StoreWaitingKeyInVx(Instruction instruction)
         {
             // TODO: FIX THIS
-            int positionX = (opcode & 0x0F00) >> 8;
             while (Keyboard.WaitingForKey())
             {
             }
-            this.RegisterV[positionX] = (byte)this.Keyboard.LastPressedKey;
+            this.RegisterV[instruction.X] = (byte)this.Keyboard.LastPressedKey;
         }
 
-        private void SetDelayTimerToVx(int opcode)
+        private void SetDelayTimerToVx(Instruction instruction)
         {
-            int positionX = (opcode & 0x0F00) >> 8;
-            this.delayTimer = this.RegisterV[positionX];
+            this.delayTimer = this.RegisterV[instruction.X];
         }
 
-        private void SetSoundTimerToVx(int opcode)
+        private void SetSoundTimerToVx(Instruction instruction)
         {
-            int positionX = (opcode & 0x0F00) >> 8;
-            this.soundTimer = this.RegisterV[positionX];
+            this.soundTimer = this.RegisterV[instruction.X];
         }
 
-        private void AddVxToI(int opcode)
+        private void AddVxToI(Instruction instruction)
         {
-            int positionX = (opcode & 0x0F00) >> 8;
-            if (this.RegisterI + this.RegisterV[positionX] >= 0x1000)
+            if (this.RegisterI + this.RegisterV[instruction.X] >= 0x1000)
             {
                 this.RegisterI = (ushort)Memory.Size;
                 this.RegisterV[0xF] = 1;
             }
             else
             {
-                this.RegisterI += this.RegisterV[positionX];
+                this.RegisterI += this.RegisterV[instruction.X];
             }
         }
         
-        private void SetIToCharacterVx(int opcode)
+        private void SetIToCharacterVx(Instruction instruction)
         {
-            int positionX = (opcode & 0x0F00) >> 8;
-            this.RegisterI = (ushort)this.RegisterV[positionX] * 5;
+            this.RegisterI = this.RegisterV[instruction.X] * 5;
         }
 
-        private void StoreInVxDecimalRegisterI(int opcode)
+        private void StoreInVxDecimalRegisterI(Instruction instruction)
         {
-            int positionX = (opcode & 0x0FFF) >> 8;
-            byte val = (byte)this.RegisterV[positionX];
+            byte val = this.RegisterV[instruction.X];
             this.Memory[this.RegisterI] = (byte)(val / 100);
             this.Memory[this.RegisterI + 1] = (byte)((val % 100) / 10);
             this.Memory[this.RegisterI + 2] = (byte)((val % 100) % 10);
         }
 
-        private void StoreV0ToVx(int opcode)
+        private void StoreV0ToVx(Instruction instruction)
         {
-            int positionX = (opcode & 0x0F00) >> 8;
-            for (int i = 0; i <= positionX; i++)
+            for (int i = 0; i <= instruction.X; i++)
             {
                 this.Memory[this.RegisterI + i] = (byte)this.RegisterV[i];
             }
         }
 
-        private void FillV0ToVxFromMemory(int opcode)
+        private void FillV0ToVxFromMemory(Instruction instruction)
         {
-            int positionX = (opcode & 0x0F00) >> 8;
-            for (int i = 0; i <= positionX; i++)
+            for (int i = 0; i <= instruction.X; i++)
             {
                 this.RegisterV[i] = this.Memory[this.RegisterI + i];
             }

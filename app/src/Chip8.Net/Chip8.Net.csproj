@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Character.cs" />
+    <Compile Include="Decoder.cs" />
     <Compile Include="Gpu.cs" />
     <Compile Include="Instruction.cs" />
     <Compile Include="Opcodes.cs" />

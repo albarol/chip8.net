@@ -1,5 +1,6 @@
 ﻿namespace Chip8.Net.Video
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Threading;
     using System.Timers;
@@ -13,7 +14,6 @@
     {
         private Processor processor;
         private CycleTimer cycleTimer;
-        private Thread thread;
         
         public FrmMain()
         {
@@ -24,13 +24,13 @@
         private void Initialize()
         {
             this.processor = new Processor(new VideoRender(this.pbMonitor));
-            this.processor.Memory.LoadRom(Loader.LoadRom(@"E:\Github\chip8.net\roms\INVADERS.rom"));
+            this.processor.Memory.LoadRom(Loader.LoadRom(@"E:\Github\chip8.net\roms\TETRIS.rom"));
             this.processor.Memory.LoadCharacters();
 
             this.cycleTimer = new CycleTimer
             {
                 Enabled = true,
-                Interval = 1,
+                Interval = Convert.ToDouble(1)/60,
                 AutoReset = true
             };
             this.cycleTimer.Elapsed += this.CycleProcess;
