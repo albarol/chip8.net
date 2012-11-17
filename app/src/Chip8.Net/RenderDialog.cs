@@ -123,7 +123,8 @@
 
         private void StmAboutClick(object sender, EventArgs e)
         {
-
+            var aboutDialog = new AboutDialog();
+            aboutDialog.Show(this);
         }
     }
 }
