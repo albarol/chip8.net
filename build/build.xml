@@ -1,0 +1,40 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build"> 
+  <PropertyGroup>
+    <DeployDir>$(MSBuildProjectDirectory)\..\deploy\</DeployDir> 
+    <BuildDir>$(DeployDir)\build\</BuildDir>
+    <PackageDir>$(DeployDir)\pkg\</PackageDir>
+    <SourceDir>$(MSBuildProjectDirectory)\..\app\</SourceDir>
+    <Configuration>Release</Configuration>
+    <Platform>Any CPU</Platform>
+  </PropertyGroup>
+
+  <Import Project="msbuild\MSBuild.Community.Tasks.Targets"/>
+
+  
+  <ItemGroup>
+    <SolutionFile Include="$(SourceDir)src\Chip8.Net\Chip8.Net.csproj" />
+  </ItemGroup>
+  
+  <Target Name="Clean">
+    <MSBuild Projects="@(SolutionFile)" Targets="Clean" Properties="Configuration=$(Configuration);Platform=$(Platform);OutputPath=$(BuildDir)"/>
+    <DeleteTree Directories="$(BuildDir)" ContinueOnError="true"/>
+    <DeleteTree Directories="$(PackageDir)" ContinueOnError="true"/>
+  </Target>
+ 
+  <Target Name="Build">
+    <MSBuild Projects="@(SolutionFile)" Properties="Configuration=$(Configuration);Platform=$(Platform);OutputPath=$(BuildDir)"/>
+  </Target>
+
+  <Target Name="Rebuild">
+    <CallTarget Targets="Clean; Build"></CallTarget>
+  </Target>
+  
+  <Target Name="Package" DependsOnTargets="Rebuild">
+  <ItemGroup>
+      <ZipFiles Include="$(BuildDir)chip8.net.exe"/>
+    </ItemGroup>
+
+  <Copy SourceFiles ="@(ZipFiles)" DestinationFolder="$(PackageDir)" />
+    <Zip Files="@(ZipFiles)" ZipFileName="$(PackageDir)\chip8.net.zip" WorkingDirectory="$(BuildDir)" />
+  </Target>
+</Project>

@@ -2,6 +2,7 @@
 {
     using System;
 
+    using Chip8.Net.Engine;
     using Chip8.Net.Test.Helpers;
 
     using NUnit.Framework;

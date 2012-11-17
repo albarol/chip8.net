@@ -1,0 +1,6 @@
+E:\Github\chip8.net\app\src\Chip8.Net\bin\Debug\Chip8.Net.exe
+E:\Github\chip8.net\app\src\Chip8.Net\bin\Debug\Chip8.Net.pdb
+E:\Github\chip8.net\app\src\Chip8.Net\obj\Debug\Chip8.Net.RenderDialog.resources
+E:\Github\chip8.net\app\src\Chip8.Net\obj\Debug\Chip8.Net.csproj.GenerateResource.Cache
+E:\Github\chip8.net\app\src\Chip8.Net\obj\Debug\Chip8.Net.exe
+E:\Github\chip8.net\app\src\Chip8.Net\obj\Debug\Chip8.Net.pdb

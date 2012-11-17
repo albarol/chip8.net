@@ -1,0 +1,5 @@
+E:\Github\chip8.net\deploy\build\Chip8.Net.dll
+E:\Github\chip8.net\deploy\build\Chip8.Net.pdb
+E:\Github\chip8.net\app\src\Chip8.Net\obj\Release\Chip8.Net.csprojResolveAssemblyReference.cache
+E:\Github\chip8.net\app\src\Chip8.Net\obj\Release\Chip8.Net.dll
+E:\Github\chip8.net\app\src\Chip8.Net\obj\Release\Chip8.Net.pdb

@@ -2,6 +2,8 @@
 {
     using System;
 
+    using Chip8.Net.Engine;
+
     public class TestGpu : Gpu
     {
         public override void DrawFrame()
