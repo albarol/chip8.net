@@ -113,7 +113,7 @@
 
         private void StmSaveStateClick(object sender, EventArgs e)
         {
-
+            this.virtualMachine.SaveState();
         }
 
         private void StmLoadStateClick(object sender, EventArgs e)
@@ -125,6 +125,28 @@
         {
             var aboutDialog = new AboutDialog();
             aboutDialog.Show(this);
+        }
+
+        private void StmPauseClick(object sender, EventArgs e)
+        {
+            if (this.virtualMachine.ProcessingStatus == ProcessingStatus.Paused)
+            {
+                this.virtualMachine.Run();
+                this.stmPause.Text = "Pause";
+            }
+            else if(this.virtualMachine.ProcessingStatus == ProcessingStatus.Running)
+            {
+                this.virtualMachine.Pause();
+                this.stmPause.Text = "Play";
+            }
+        }
+
+        private void StmDebuggerClick(object sender, EventArgs e)
+        {
+            this.virtualMachine.Pause();
+            this.stmPause.Text = "Play";
+            var debuggerDialog = new DebuggerDialog(this.virtualMachine);
+            debuggerDialog.Show(this);
         }
     }
 }

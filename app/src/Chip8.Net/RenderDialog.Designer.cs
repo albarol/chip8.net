@@ -33,8 +33,9 @@
             this.stmFile = new System.Windows.Forms.ToolStripMenuItem();
             this.stmLoadRom = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.stmPowerOff = new System.Windows.Forms.ToolStripMenuItem();
+            this.stmPause = new System.Windows.Forms.ToolStripMenuItem();
             this.stmReset = new System.Windows.Forms.ToolStripMenuItem();
+            this.stmPowerOff = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.stmSaveState = new System.Windows.Forms.ToolStripMenuItem();
             this.stmLoadState = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,8 +47,8 @@
             this.stmLargeGraphics = new System.Windows.Forms.ToolStripMenuItem();
             this.stmEnableSound = new System.Windows.Forms.ToolStripMenuItem();
             this.stmDebugger = new System.Windows.Forms.ToolStripMenuItem();
-            this.pbRender = new System.Windows.Forms.PictureBox();
             this.stmAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.pbRender = new System.Windows.Forms.PictureBox();
             this.mnEmulator.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbRender)).BeginInit();
             this.SuspendLayout();
@@ -70,8 +71,9 @@
             this.stmFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.stmLoadRom,
             this.toolStripMenuItem1,
-            this.stmPowerOff,
+            this.stmPause,
             this.stmReset,
+            this.stmPowerOff,
             this.toolStripMenuItem2,
             this.stmSaveState,
             this.stmLoadState,
@@ -94,12 +96,13 @@
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(170, 6);
             // 
-            // stmPowerOff
+            // stmPause
             // 
-            this.stmPowerOff.Name = "stmPowerOff";
-            this.stmPowerOff.Size = new System.Drawing.Size(173, 22);
-            this.stmPowerOff.Text = "Power Off";
-            this.stmPowerOff.Click += new System.EventHandler(this.StmPowerOffClick);
+            this.stmPause.Name = "stmPause";
+            this.stmPause.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
+            this.stmPause.Size = new System.Drawing.Size(173, 22);
+            this.stmPause.Text = "Pause";
+            this.stmPause.Click += new System.EventHandler(this.StmPauseClick);
             // 
             // stmReset
             // 
@@ -108,6 +111,13 @@
             this.stmReset.Size = new System.Drawing.Size(173, 22);
             this.stmReset.Text = "Reset";
             this.stmReset.Click += new System.EventHandler(this.StmResetClick);
+            // 
+            // stmPowerOff
+            // 
+            this.stmPowerOff.Name = "stmPowerOff";
+            this.stmPowerOff.Size = new System.Drawing.Size(173, 22);
+            this.stmPowerOff.Text = "Power Off";
+            this.stmPowerOff.Click += new System.EventHandler(this.StmPowerOffClick);
             // 
             // toolStripMenuItem2
             // 
@@ -192,6 +202,14 @@
             this.stmDebugger.Name = "stmDebugger";
             this.stmDebugger.Size = new System.Drawing.Size(71, 20);
             this.stmDebugger.Text = "Debugger";
+            this.stmDebugger.Click += new System.EventHandler(this.StmDebuggerClick);
+            // 
+            // stmAbout
+            // 
+            this.stmAbout.Name = "stmAbout";
+            this.stmAbout.Size = new System.Drawing.Size(52, 20);
+            this.stmAbout.Text = "About";
+            this.stmAbout.Click += new System.EventHandler(this.StmAboutClick);
             // 
             // pbRender
             // 
@@ -200,13 +218,6 @@
             this.pbRender.Size = new System.Drawing.Size(385, 167);
             this.pbRender.TabIndex = 1;
             this.pbRender.TabStop = false;
-            // 
-            // stmAbout
-            // 
-            this.stmAbout.Name = "stmAbout";
-            this.stmAbout.Size = new System.Drawing.Size(52, 20);
-            this.stmAbout.Text = "About";
-            this.stmAbout.Click += new System.EventHandler(this.StmAboutClick);
             // 
             // RenderDialog
             // 
@@ -251,6 +262,7 @@
         private System.Windows.Forms.ToolStripMenuItem stmDebugger;
         private System.Windows.Forms.PictureBox pbRender;
         private System.Windows.Forms.ToolStripMenuItem stmAbout;
+        private System.Windows.Forms.ToolStripMenuItem stmPause;
 
     }
 }

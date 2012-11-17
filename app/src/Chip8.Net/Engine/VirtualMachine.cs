@@ -7,15 +7,17 @@
     public class VirtualMachine
     {
         private Thread emulationCycle;
-        private bool isRunning;
         private string loadedRom;
         
         public VirtualMachine(Gpu render)
         {
             this.Render = render;
             this.Processor = new Processor(this.Render);
+            this.ProcessingStatus = ProcessingStatus.Stopped;
+            
         }
 
+        public ProcessingStatus ProcessingStatus { get; private set; }
         public Processor Processor { get; private set; }
         public Gpu Render { get; private set; }
         public Keyboard Keyboard
@@ -41,7 +43,13 @@
 
         public void Reset()
         {
-            this.Stop();
+            if (this.ProcessingStatus == ProcessingStatus.Running)
+            {
+                this.Pause();
+            }
+            
+            this.Render.Clear();
+            this.Render.DrawFrame();
             Thread.Sleep(10);
             if (!string.IsNullOrEmpty(this.loadedRom))
             {
@@ -50,28 +58,50 @@
             }
         }
 
+        public void Pause()
+        {
+            if (this.ProcessingStatus == ProcessingStatus.Running)
+            {
+                this.ProcessingStatus = ProcessingStatus.Paused;
+                this.emulationCycle.Abort();
+            }
+        }
+
         public void Stop()
         {
-            if (this.isRunning)
+            if (this.ProcessingStatus == ProcessingStatus.Running)
             {
-                this.isRunning = false;
-                this.emulationCycle.Abort();
-                this.Render.Clear();
-                this.Render.DrawFrame();
+                this.Pause();
             }
+
+            this.ProcessingStatus = ProcessingStatus.Stopped;
+            this.Render.Clear();
+            this.Render.DrawFrame();
+            this.Processor.Initialize();
+            this.loadedRom = null;
         }
         
         public void Run()
         {
-            this.emulationCycle = new Thread(this.EmulationCycle);
-            this.emulationCycle.Start();
+            if (!string.IsNullOrEmpty(this.loadedRom))
+            {
+                this.ProcessingStatus = ProcessingStatus.Running;
+                this.emulationCycle = new Thread(this.EmulationCycle);
+                this.emulationCycle.Start();
+            }
+        }
+
+        public void SaveState()
+        {
+        }
+
+        public void LoadState()
+        {
         }
 
         private void EmulationCycle()
         {
-            this.isRunning = true;
-
-            while (this.isRunning)
+            while (this.ProcessingStatus == ProcessingStatus.Running)
             {
                 this.Processor.StepRun();
             }

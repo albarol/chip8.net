@@ -54,8 +54,15 @@
     <Compile Include="AboutDialog.Designer.cs">
       <DependentUpon>AboutDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="DebuggerDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DebuggerDialog.Designer.cs">
+      <DependentUpon>DebuggerDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Engine\Decoder.cs" />
     <Compile Include="Engine\Gpu.cs" />
+    <Compile Include="Engine\ProcessingStatus.cs" />
     <Compile Include="Helpers\Loader.cs" />
     <Compile Include="Engine\Instruction.cs" />
     <Compile Include="Engine\Opcodes.cs" />
@@ -85,6 +92,9 @@
   <ItemGroup>
     <EmbeddedResource Include="AboutDialog.resx">
       <DependentUpon>AboutDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DebuggerDialog.resx">
+      <DependentUpon>DebuggerDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RenderDialog.resx">
       <DependentUpon>RenderDialog.cs</DependentUpon>
