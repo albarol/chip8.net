@@ -10,7 +10,7 @@ _ReSharper.*/
 .DS_Store
 ._.DS_Store
 *.dotCover
-build/
+deploy/
 TestResult.xml
 *.user
 *.pdb
