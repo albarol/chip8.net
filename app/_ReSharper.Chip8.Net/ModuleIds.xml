@@ -1,5 +1,0 @@
-<Modules>
-  <Module PersistentId="08A2D10B-FBC4-4CAD-B937-512A1D33A9EE" ModuleId="Chip8.Net" />
-  <Module PersistentId="41ADE00B-DA19-41FE-8789-AEF1A898EFD2" ModuleId="Chip8.Net.Test" />
-  <Module PersistentId="E1929CEB-4B7A-4F63-9A22-0141CAC2DE14" ModuleId="Chip8.Net.Video" />
-</Modules>
