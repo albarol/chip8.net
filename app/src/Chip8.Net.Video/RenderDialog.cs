@@ -84,5 +84,15 @@
             openDialog.FileOk += (o, args) => this.presenter.InitializeRom(openDialog.FileName);
             openDialog.ShowDialog();
         }
+
+        private void StmPowerOffClick(object sender, EventArgs e)
+        {
+            this.virtualMachine.Stop();
+        }
+
+        private void StmResetClick(object sender, EventArgs e)
+        {
+            this.virtualMachine.Reset();
+        }
     }
 }

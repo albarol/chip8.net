@@ -1,11 +1,14 @@
-﻿namespace Chip8.Net.Video.Settings
+﻿namespace Chip8.Net
 {
     using System.Threading;
+
+    using Chip8.Net.Helpers;
 
     public class VirtualMachine
     {
         private Thread emulationCycle;
-        private bool isRunning = false;
+        private bool isRunning;
+        private string loadedRom;
         
         public VirtualMachine(Gpu render)
         {
@@ -22,14 +25,32 @@
         
         public void LoadRom(string rom)
         {
+            this.loadedRom = rom;
             this.Processor.Initialize();
             this.Processor.Memory.LoadRom(Loader.LoadRom(rom));
             this.Processor.Memory.LoadCharacters();
         }
 
+        public void Reset()
+        {
+            this.Stop();
+            Thread.Sleep(10);
+            if (!string.IsNullOrEmpty(this.loadedRom))
+            {
+                this.LoadRom(this.loadedRom);
+                this.Run();
+            }
+        }
+
         public void Stop()
         {
-            this.isRunning = false;
+            if (this.isRunning)
+            {
+                this.isRunning = false;
+                this.emulationCycle.Abort();
+                this.Render.Clear();
+                this.Render.DrawFrame();
+            }
         }
         
         public void Run()

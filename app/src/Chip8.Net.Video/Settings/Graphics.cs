@@ -24,7 +24,7 @@
         {
             return new Graphics
             {
-                WindowSize = new Size(816, 544),
+                WindowSize = new Size(806, 474),
                 RenderSize = new Size(768, 384)
             };
         }

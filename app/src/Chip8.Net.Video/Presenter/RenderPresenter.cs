@@ -25,6 +25,7 @@
 
         public void InitializeRom(string loadedRom)
         {
+            this.virtualMachine.Stop();
             this.virtualMachine.LoadRom(loadedRom);
             this.virtualMachine.Run();
         }

@@ -1,4 +1,4 @@
-﻿namespace Chip8.Net.Video.Settings
+﻿namespace Chip8.Net.Helpers
 {
     using System.IO;
 

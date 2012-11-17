@@ -5,6 +5,6 @@
     public interface IRenderDialog
     {
         Size RenderSize { get; set; }
-        Size WindowSize { get; set; }   
+        Size WindowSize { get; set; }
     }
 }

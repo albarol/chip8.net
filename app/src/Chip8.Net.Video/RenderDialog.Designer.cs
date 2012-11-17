@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RenderDialog));
             this.mnEmulator = new System.Windows.Forms.MenuStrip();
             this.stmFile = new System.Windows.Forms.ToolStripMenuItem();
             this.stmLoadRom = new System.Windows.Forms.ToolStripMenuItem();
@@ -81,53 +82,55 @@
             // stmLoadRom
             // 
             this.stmLoadRom.Name = "stmLoadRom";
-            this.stmLoadRom.Size = new System.Drawing.Size(152, 22);
+            this.stmLoadRom.Size = new System.Drawing.Size(130, 22);
             this.stmLoadRom.Text = "Load ROM";
             this.stmLoadRom.Click += new System.EventHandler(this.StmLoadRomClick);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(127, 6);
             // 
             // stmPowerOff
             // 
             this.stmPowerOff.Name = "stmPowerOff";
-            this.stmPowerOff.Size = new System.Drawing.Size(152, 22);
+            this.stmPowerOff.Size = new System.Drawing.Size(130, 22);
             this.stmPowerOff.Text = "Power Off";
+            this.stmPowerOff.Click += new System.EventHandler(this.StmPowerOffClick);
             // 
             // stmReset
             // 
             this.stmReset.Name = "stmReset";
-            this.stmReset.Size = new System.Drawing.Size(152, 22);
+            this.stmReset.Size = new System.Drawing.Size(130, 22);
             this.stmReset.Text = "Reset";
+            this.stmReset.Click += new System.EventHandler(this.StmResetClick);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(149, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(127, 6);
             // 
             // stmSaveState
             // 
             this.stmSaveState.Name = "stmSaveState";
-            this.stmSaveState.Size = new System.Drawing.Size(152, 22);
+            this.stmSaveState.Size = new System.Drawing.Size(130, 22);
             this.stmSaveState.Text = "Save State";
             // 
             // stmLoadState
             // 
             this.stmLoadState.Name = "stmLoadState";
-            this.stmLoadState.Size = new System.Drawing.Size(152, 22);
+            this.stmLoadState.Size = new System.Drawing.Size(130, 22);
             this.stmLoadState.Text = "Load State";
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(149, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(127, 6);
             // 
             // stmExit
             // 
             this.stmExit.Name = "stmExit";
-            this.stmExit.Size = new System.Drawing.Size(152, 22);
+            this.stmExit.Size = new System.Drawing.Size(130, 22);
             this.stmExit.Text = "Exit";
             this.stmExit.Click += new System.EventHandler(this.StmExitClick);
             // 
@@ -191,11 +194,12 @@
             this.ClientSize = new System.Drawing.Size(385, 194);
             this.Controls.Add(this.pbRender);
             this.Controls.Add(this.mnEmulator);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.mnEmulator;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "RenderDialog";
-            this.Text = "CHIP8";
+            this.Text = "CHIP8.NET";
             this.mnEmulator.ResumeLayout(false);
             this.mnEmulator.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbRender)).EndInit();

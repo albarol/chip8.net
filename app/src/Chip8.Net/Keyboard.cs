@@ -5,29 +5,29 @@
     public class Keyboard
     {
         private byte[] keyboard = new byte[16];
-        private IDictionary<int, int> keyboardMap = new Dictionary<int, int>
+        private IDictionary<char, int> keyboardMap = new Dictionary<char, int>
         {
-            { 49, 0x0 },
-            { 50, 0x1 },
-            { 51, 0x2 },
-            { 52, 0x3 },
-            { 81, 0x4 },
-            { 87, 0x5 },
-            { 69, 0x6 },
-            { 82, 0x7 },
-            { 65, 0x8 },
-            { 83, 0x9 },
-            { 68, 0xA },
-            { 70, 0xB },
-            { 90, 0xC },
-            { 88, 0xD },
-            { 67, 0xE },
-            { 86, 0xF }
+            { '1', 0x0 },
+            { '2', 0x1 },
+            { '3', 0x2 },
+            { '4', 0x3 },
+            { 'Q', 0x4 },
+            { 'W', 0x5 },
+            { 'E', 0x6 },
+            { 'R', 0x7 },
+            { 'A', 0x8 },
+            { 'S', 0x9 },
+            { 'D', 0xA },
+            { 'F', 0xB },
+            { 'Z', 0xC },
+            { 'X', 0xD },
+            { 'C', 0xE },
+            { 'V', 0xF }
         };
 
         public int LastPressedKey { get; private set; }
 
-        public void PressKey(int key)
+        public void PressKey(char key)
         {
             if (this.keyboardMap.ContainsKey(key))
             {
@@ -36,7 +36,7 @@
             }
         }
 
-        public void ReleaseKey(int key)
+        public void ReleaseKey(char key)
         {
             if (this.keyboardMap.ContainsKey(key))
             {
