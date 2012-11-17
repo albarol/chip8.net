@@ -5,28 +5,27 @@
 
     using Chip8.Net.Video.Settings;
 
-    using CycleTimer = System.Timers.Timer;
-
-    public partial class FrmMain : Form
+    public partial class RenderDialog : Form
     {
         private Processor processor;
-        private CycleTimer cycleTimer;
         private Thread emulationCycle;
         
-        public FrmMain()
+        public RenderDialog(string romName, Graphics graphics)
         {
             this.InitializeComponent();
-            this.Initialize();
+            this.Initialize(romName, graphics);
         }
 
-        private void Initialize()
+        private void Initialize(string romName, Graphics graphics)
         {
-            this.processor = new Processor(new VideoRender(this.pbMonitor));
-            this.processor.Memory.LoadRom(Loader.LoadRom(@"E:\Github\chip8.net\roms\PUZZLE.rom"));
+            this.Size = graphics.WindowSize;
+            this.pbMonitor.Size = graphics.RenderSize;
+            this.processor = new Processor(new VideoRender(this.pbMonitor, graphics.Pixel));
+            this.processor.Memory.LoadRom(Loader.LoadRom(romName));
             this.processor.Memory.LoadCharacters();
 
 
-            this.emulationCycle = new Thread(EmulationCycle);
+            this.emulationCycle = new Thread(this.EmulationCycle);
             this.emulationCycle.Start();
             this.KeyDown += this.FrmKeyDown;
             this.KeyUp += this.FrmKeyUp;

@@ -1,6 +1,6 @@
 ﻿namespace Chip8.Net.Video
 {
-    partial class FrmMain
+    partial class RenderDialog
     {
         /// <summary>
         /// Required designer variable.
@@ -34,22 +34,23 @@
             // 
             // pbMonitor
             // 
-            this.pbMonitor.Location = new System.Drawing.Point(12, 12);
+            this.pbMonitor.Location = new System.Drawing.Point(2, 2);
+            this.pbMonitor.Margin = new System.Windows.Forms.Padding(0);
             this.pbMonitor.Name = "pbMonitor";
             this.pbMonitor.Size = new System.Drawing.Size(384, 192);
             this.pbMonitor.TabIndex = 0;
             this.pbMonitor.TabStop = false;
             // 
-            // FrmMain
+            // RenderDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.ClientSize = new System.Drawing.Size(406, 269);
+            this.ClientSize = new System.Drawing.Size(385, 194);
             this.Controls.Add(this.pbMonitor);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "FrmMain";
+            this.Name = "RenderDialog";
             this.Text = "CHIP8";
             ((System.ComponentModel.ISupportInitialize)(this.pbMonitor)).EndInit();
             this.ResumeLayout(false);

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
-
-namespace Chip8.Net.Video
+﻿namespace Chip8.Net.Video
 {
+    using System;
+    using System.Windows.Forms;
+
     static class Program
     {
         /// <summary>
@@ -15,7 +13,7 @@ namespace Chip8.Net.Video
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FrmMain());
+            Application.Run(new LoadDialog());
         }
     }
 }

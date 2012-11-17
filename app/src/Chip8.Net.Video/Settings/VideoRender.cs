@@ -5,14 +5,15 @@
 
     public class VideoRender : Gpu
     {
-        private const int Size = 0x6;
+        private readonly int pixelSize = 0x6;
         private readonly PictureBox view;
         private readonly Brush foreground;
         private readonly Brush background;
 
-        public VideoRender(PictureBox view)
+        public VideoRender(PictureBox view, int pixelSize)
         {
             this.view = view;
+            this.pixelSize = pixelSize;
             this.foreground = new SolidBrush(Color.White);
             this.background = new SolidBrush(Color.Black);
         }
@@ -27,11 +28,11 @@
                 {
                     if (this.Gfx[row, column] == 0x0)
                     {
-                        g.FillRectangle(this.background, row * Size, column * Size, Size, Size);
+                        g.FillRectangle(this.background, row * this.pixelSize, column * this.pixelSize, this.pixelSize, this.pixelSize);
                     }
                     else
                     {
-                        g.FillRectangle(this.foreground, row * Size, column * Size, Size, Size);
+                        g.FillRectangle(this.foreground, row * this.pixelSize, column * this.pixelSize, this.pixelSize, this.pixelSize);
                     }
                 }
             }
