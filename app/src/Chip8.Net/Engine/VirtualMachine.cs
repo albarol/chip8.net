@@ -1,5 +1,6 @@
 ﻿namespace Chip8.Net.Engine
 {
+    using System;
     using System.Threading;
 
     using Chip8.Net.Helpers;
@@ -64,6 +65,7 @@
             {
                 this.ProcessingStatus = ProcessingStatus.Paused;
                 this.emulationCycle.Abort();
+                Thread.Sleep(20);
             }
         }
 
@@ -104,7 +106,7 @@
             while (this.ProcessingStatus == ProcessingStatus.Running)
             {
                 this.Processor.StepRun();
-            }
+            }    
         }
     }
 }
