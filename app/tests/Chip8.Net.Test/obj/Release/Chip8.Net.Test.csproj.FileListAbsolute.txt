@@ -1,5 +1,0 @@
-E:\Github\chip8.net\deploy\build\Chip8.Net.Test.dll
-E:\Github\chip8.net\deploy\build\Chip8.Net.Test.pdb
-E:\Github\chip8.net\app\tests\Chip8.Net.Test\obj\Release\Chip8.Net.Test.csprojResolveAssemblyReference.cache
-E:\Github\chip8.net\app\tests\Chip8.Net.Test\obj\Release\Chip8.Net.Test.dll
-E:\Github\chip8.net\app\tests\Chip8.Net.Test\obj\Release\Chip8.Net.Test.pdb

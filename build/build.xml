@@ -3,13 +3,13 @@
     <DeployDir>$(MSBuildProjectDirectory)\..\deploy\</DeployDir> 
     <BuildDir>$(DeployDir)\build\</BuildDir>
     <PackageDir>$(DeployDir)\pkg\</PackageDir>
+    <RomDir>$(MSBuildProjectDirectory)\..\roms\</RomDir>
     <SourceDir>$(MSBuildProjectDirectory)\..\app\</SourceDir>
     <Configuration>Release</Configuration>
     <Platform>Any CPU</Platform>
   </PropertyGroup>
 
   <Import Project="msbuild\MSBuild.Community.Tasks.Targets"/>
-
   
   <ItemGroup>
     <SolutionFile Include="$(SourceDir)src\Chip8.Net\Chip8.Net.csproj" />
@@ -30,8 +30,9 @@
   </Target>
   
   <Target Name="Package" DependsOnTargets="Rebuild">
-  <ItemGroup>
+    <ItemGroup>
       <ZipFiles Include="$(BuildDir)chip8.net.exe"/>
+      <ZipFiles Include="$(RomDir)/*.*"/>
     </ItemGroup>
 
   <Copy SourceFiles ="@(ZipFiles)" DestinationFolder="$(PackageDir)" />
