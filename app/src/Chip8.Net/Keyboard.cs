@@ -5,52 +5,60 @@
     public class Keyboard
     {
         private int releaseKey = 0xFF;
-        private IDictionary<int, int> keys = new Dictionary<int, int>
-        {
-            { 0x49, 0x0 },
-            { 0x50, 0x1 },
-            { 0x51, 0x2 },
-            { 0x52, 0x3 },
-            { 0x81, 0x4 },
-            { 0x87, 0x5 },
-            { 0x69, 0x6 },
-            { 0x82, 0x7 },
-            { 0x65, 0x8 },
-            { 0x83, 0x9 },
-            { 0x68, 0xA },
-            { 0x70, 0xB },
-            { 0x90, 0xC },
-            { 0x88, 0xD },
-            { 0x67, 0xE },
-            { 0x86, 0xF }
-        };
+        private byte[] keyboard = new byte[16];
 
-        private int pressedKey;
-        
-        public int LastPressedKey
+        private IDictionary<int, int> keyboardMap = new Dictionary<int, int>
         {
-            get
-            {
-                return this.pressedKey;
-            }
-        }
+            { 49, 0x0 },
+            { 50, 0x1 },
+            { 51, 0x2 },
+            { 52, 0x3 },
+            { 81, 0x4 },
+            { 87, 0x5 },
+            { 69, 0x6 },
+            { 82, 0x7 },
+            { 65, 0x8 },
+            { 83, 0x9 },
+            { 68, 0xA },
+            { 70, 0xB },
+            { 90, 0xC },
+            { 88, 0xD },
+            { 67, 0xE },
+            { 86, 0xF }
+        };
 
         public void PressKey(int key)
         {
-            if (this.keys.ContainsKey(key))
+            if (this.keyboardMap.ContainsKey(key))
             {
-                this.pressedKey = this.keys[key];
+                this.keyboard[this.keyboardMap[key]] = 0x1;
+                this.LastPressedKey = this.keyboardMap[key];
             }
         }
 
-        public void ReleaseKey()
+        public void ReleaseKey(int key)
         {
-            this.pressedKey = this.releaseKey;
+            if (this.keyboardMap.ContainsKey(key))
+            {
+                this.keyboard[this.keyboardMap[key]] = 0x0;
+                this.LastPressedKey = -1;
+            }
         }
+
+        public int LastPressedKey { get; private set; }
         
-        public bool WaitingForKey()
+        public int WaitingForKey()
         {
-            return this.LastPressedKey != this.releaseKey;
+            int keyPressed = -1;
+
+            for (int i = 0; i < 16; ++i)
+            {
+                if (this.keyboard[i] != 0x0)
+                {
+                    keyPressed = i;
+                }
+            }
+            return keyPressed;
         }
     }
 }

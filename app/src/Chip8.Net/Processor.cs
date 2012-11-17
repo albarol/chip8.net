@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.IO;
 
     public class Processor
@@ -41,6 +40,17 @@
             this.writer.WriteLine("{0} - {1} - {2}", instruction.Routine, this.ProgramCounter, this.RegisterV);
             this.ProgramCounter += 2;
             this.InterpretOpcode(instruction);
+
+            // Update timers
+            if (this.delayTimer > 0)
+            {
+                this.delayTimer -= 1;    
+            }
+            
+            if (this.soundTimer > 0)
+            {
+                this.soundTimer -= 1;    
+            }
         }
 
         private void InterpretOpcode(Instruction instruction)
@@ -320,7 +330,7 @@
 
         private void SetVxRandomNumberAndNn(Instruction instruction)
         {
-            var rnd = new Random();
+            var rnd = new Random(System.Environment.TickCount);
             this.RegisterV[instruction.X] = (byte)(rnd.Next(255) & instruction.Nn);
         }
 
@@ -367,11 +377,11 @@
 
         private void StoreWaitingKeyInVx(Instruction instruction)
         {
-            // TODO: FIX THIS
-            while (Keyboard.WaitingForKey())
+            var keyPressed = this.Keyboard.WaitingForKey();
+            if (keyPressed > -1)
             {
+                this.RegisterV[instruction.X] = (byte)keyPressed;
             }
-            this.RegisterV[instruction.X] = (byte)this.Keyboard.LastPressedKey;
         }
 
         private void SetDelayTimerToVx(Instruction instruction)

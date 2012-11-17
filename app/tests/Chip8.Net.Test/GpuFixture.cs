@@ -1,5 +1,7 @@
 ﻿namespace Chip8.Net.Test
 {
+    using System;
+
     using Chip8.Net.Test.Helpers;
 
     using NUnit.Framework;
@@ -27,6 +29,17 @@
             // Act:
             this.gpu.Draw(x, y, sprite);
             this.gpu.DrawFrame();
+        }
+
+        [Test]
+        public void GetIntKeyMapping()
+        {
+            // Arrange:
+            char[] mapping = new[] { '1', '2', '3', '4', 'Q', 'W', 'E', 'R', 'A', 'S', 'D', 'F', 'Z', 'X', 'C', 'V' };
+            foreach(char i in mapping)
+            {
+                Console.WriteLine((int)i);
+            }
         }
     }
 }
