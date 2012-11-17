@@ -6,7 +6,7 @@
     public class Processor
     {
         private int delayTimer;
-        private int soundTimer;
+        
         private Stack<ushort> stack;
 
         public Processor(Gpu gpu)
@@ -15,7 +15,8 @@
             this.Keyboard = new Keyboard();
             this.Initialize();
         }
-
+        
+        public Sound Sound { get; private set; }
         public Memory Memory { get; private set; }
         public Register RegisterV { get; private set; }
         public int RegisterI { get; private set; }
@@ -27,7 +28,7 @@
         public void Initialize()
         {
             this.delayTimer = 0x0;
-            this.soundTimer = 0x0;
+            this.Sound = new Sound();
             this.stack = new Stack<ushort>(12);
             this.Memory = new Memory();
             this.ProgramCounter = 0x200;
@@ -41,16 +42,13 @@
             this.ProgramCounter += 2;
             this.InterpretOpcode(instruction);
 
-            // Update timers
+            // update timers
             if (this.delayTimer > 0)
             {
                 this.delayTimer -= 1;    
             }
-            
-            if (this.soundTimer > 0)
-            {
-                this.soundTimer -= 1;    
-            }
+
+            this.Sound.Update();
         }
 
         private void InterpretOpcode(Instruction instruction)
@@ -391,7 +389,7 @@
 
         private void SetSoundTimerToVx(Instruction instruction)
         {
-            this.soundTimer = this.RegisterV[instruction.X];
+            this.Sound.Timer = this.RegisterV[instruction.X];
         }
 
         private void AddVxToI(Instruction instruction)
