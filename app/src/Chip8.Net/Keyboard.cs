@@ -4,9 +4,7 @@
 
     public class Keyboard
     {
-        private int releaseKey = 0xFF;
         private byte[] keyboard = new byte[16];
-
         private IDictionary<int, int> keyboardMap = new Dictionary<int, int>
         {
             { 49, 0x0 },
@@ -27,6 +25,8 @@
             { 86, 0xF }
         };
 
+        public int LastPressedKey { get; private set; }
+
         public void PressKey(int key)
         {
             if (this.keyboardMap.ContainsKey(key))
@@ -44,8 +44,6 @@
                 this.LastPressedKey = -1;
             }
         }
-
-        public int LastPressedKey { get; private set; }
         
         public int WaitingForKey()
         {

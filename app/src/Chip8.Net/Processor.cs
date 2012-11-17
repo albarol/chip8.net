@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
 
     public class Processor
     {
@@ -10,20 +9,11 @@
         private int soundTimer;
         private Stack<ushort> stack;
 
-        private StreamWriter writer;
-
         public Processor(Gpu gpu)
         {
-            this.delayTimer = 0x0;
-            this.soundTimer = 0x0;
-            this.stack = new Stack<ushort>(12);
-            this.Memory = new Memory();
-            this.ProgramCounter = 0x200;
-            this.RegisterV = new Register(0x10);
             this.Gpu = gpu;
             this.Keyboard = new Keyboard();
-            this.RegisterI = 0x0;
-            this.writer = new StreamWriter("memdump.txt");
+            this.Initialize();
         }
 
         public Memory Memory { get; private set; }
@@ -34,10 +24,20 @@
 
         public int ProgramCounter { get; private set; }
 
+        public void Initialize()
+        {
+            this.delayTimer = 0x0;
+            this.soundTimer = 0x0;
+            this.stack = new Stack<ushort>(12);
+            this.Memory = new Memory();
+            this.ProgramCounter = 0x200;
+            this.RegisterV = new Register(0x10);
+            this.RegisterI = 0x0;
+        }
+
         public void StepRun()
         {
             var instruction = Decoder.DecodeOpcode(this.Memory[this.ProgramCounter], this.Memory[this.ProgramCounter + 1]);
-            this.writer.WriteLine("{0} - {1} - {2}", instruction.Routine, this.ProgramCounter, this.RegisterV);
             this.ProgramCounter += 2;
             this.InterpretOpcode(instruction);
 

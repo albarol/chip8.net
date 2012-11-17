@@ -5,17 +5,27 @@
 
     public class VideoRender : Gpu
     {
-        private readonly int pixelSize = 0x6;
         private readonly PictureBox view;
         private readonly Brush foreground;
         private readonly Brush background;
 
-        public VideoRender(PictureBox view, int pixelSize)
+        public VideoRender(PictureBox view)
         {
             this.view = view;
-            this.pixelSize = pixelSize;
             this.foreground = new SolidBrush(Color.White);
             this.background = new SolidBrush(Color.Black);
+        }
+
+        public int PixelSize
+        {
+            get
+            {
+                if (this.view.Size.Width == 768)
+                {
+                    return 0xC;
+                }
+                return 0x6;
+            }
         }
         
         public override void DrawFrame()
@@ -28,11 +38,11 @@
                 {
                     if (this.Gfx[row, column] == 0x0)
                     {
-                        g.FillRectangle(this.background, row * this.pixelSize, column * this.pixelSize, this.pixelSize, this.pixelSize);
+                        g.FillRectangle(this.background, row * this.PixelSize, column * this.PixelSize, this.PixelSize, this.PixelSize);
                     }
                     else
                     {
-                        g.FillRectangle(this.foreground, row * this.pixelSize, column * this.pixelSize, this.pixelSize, this.pixelSize);
+                        g.FillRectangle(this.foreground, row * this.PixelSize, column * this.PixelSize, this.PixelSize, this.PixelSize);
                     }
                 }
             }

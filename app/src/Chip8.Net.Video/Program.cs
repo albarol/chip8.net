@@ -13,7 +13,7 @@
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new LoadDialog());
+            Application.Run(new RenderDialog());
         }
     }
 }

@@ -10,6 +10,14 @@
         {
         }
 
+        public int Size
+        {
+            get
+            {
+                return this.memory.Length;
+            }
+        }
+
         public byte this[int index]
         {
             get
@@ -30,8 +38,6 @@
                 this.memory[index] = value;
             }
         }
-
-        public int Size { get { return memory.Length; } }
 
         public void Clear()
         {

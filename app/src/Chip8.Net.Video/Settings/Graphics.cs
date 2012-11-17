@@ -10,15 +10,13 @@
 
         public Size WindowSize { get; private set; }
         public Size RenderSize { get; private set; }
-        public int Pixel { get; private set; }
-
+        
         public static Graphics Small()
         {
             return new Graphics
             {
-                WindowSize = new Size(401, 233),
-                RenderSize = new Size(384, 192),
-                Pixel = 0x6
+                WindowSize = new Size(408, 272),
+                RenderSize = new Size(384, 192)
             };
         }
 
@@ -26,9 +24,8 @@
         {
             return new Graphics
             {
-                WindowSize = new Size(802, 466),
-                RenderSize = new Size(768, 384),
-                Pixel = 0xC
+                WindowSize = new Size(816, 544),
+                RenderSize = new Size(768, 384)
             };
         }
     }

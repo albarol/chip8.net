@@ -43,10 +43,10 @@
 
         public override string ToString()
         {
-            StringBuilder builder = new StringBuilder("{");
-            for(int i = 0; i < register.Length; i++)
+            var builder = new StringBuilder("{");
+            for (int i = 0; i < this.register.Length; i++)
             {
-                builder.AppendFormat("{0}, ", register[i]);
+                builder.AppendFormat("{0}, ", this.register[i]);
             }
             builder.Append("}");
             return builder.ToString();
