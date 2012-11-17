@@ -109,5 +109,20 @@
                 this.virtualMachine.Sound.Enabled = true;
             }
         }
+
+        private void StmSaveStateClick(object sender, EventArgs e)
+        {
+
+        }
+
+        private void StmLoadStateClick(object sender, EventArgs e)
+        {
+
+        }
+
+        private void StmAboutClick(object sender, EventArgs e)
+        {
+
+        }
     }
 }
