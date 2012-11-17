@@ -149,7 +149,7 @@
             this.stmSmallGraphics,
             this.stmLargeGraphics});
             this.stmWindowSize.Name = "stmWindowSize";
-            this.stmWindowSize.Size = new System.Drawing.Size(146, 22);
+            this.stmWindowSize.Size = new System.Drawing.Size(152, 22);
             this.stmWindowSize.Text = "Window Size";
             // 
             // stmSmallGraphics
@@ -168,9 +168,12 @@
             // 
             // stmEnableSound
             // 
+            this.stmEnableSound.Checked = true;
+            this.stmEnableSound.CheckState = System.Windows.Forms.CheckState.Checked;
             this.stmEnableSound.Name = "stmEnableSound";
-            this.stmEnableSound.Size = new System.Drawing.Size(146, 22);
+            this.stmEnableSound.Size = new System.Drawing.Size(152, 22);
             this.stmEnableSound.Text = "Enable Sound";
+            this.stmEnableSound.Click += new System.EventHandler(this.StmEnableSoundClick);
             // 
             // stmDebugger
             // 

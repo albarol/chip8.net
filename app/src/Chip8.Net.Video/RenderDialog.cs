@@ -18,9 +18,10 @@
         public RenderDialog()
         {
             this.InitializeComponent();
-            this.virtualMachine = new VirtualMachine(new VideoRender(this.pbRender));
             this.KeyDown += this.FrmKeyDown;
             this.KeyUp += this.FrmKeyUp;
+            
+            this.virtualMachine = new VirtualMachine(new VideoRender(this.pbRender));
             this.presenter = new RenderPresenter(this, this.virtualMachine);
         }
 
@@ -93,6 +94,20 @@
         private void StmResetClick(object sender, EventArgs e)
         {
             this.virtualMachine.Reset();
+        }
+
+        private void StmEnableSoundClick(object sender, EventArgs e)
+        {
+            if (this.stmEnableSound.CheckState == CheckState.Checked)
+            {
+                this.stmEnableSound.CheckState = CheckState.Unchecked;
+                this.virtualMachine.Sound.Enabled = false;
+            }
+            else
+            {
+                this.stmEnableSound.CheckState = CheckState.Checked;
+                this.virtualMachine.Sound.Enabled = true;
+            }
         }
     }
 }

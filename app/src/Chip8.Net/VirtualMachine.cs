@@ -22,7 +22,15 @@
         {
             get { return this.Processor.Keyboard; }
         }
-        
+
+        public Sound Sound
+        {
+            get
+            {
+                return this.Processor.Sound;
+            }
+        }
+
         public void LoadRom(string rom)
         {
             this.loadedRom = rom;
