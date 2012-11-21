@@ -37,6 +37,7 @@
     <ApplicationIcon>chip8ico.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -91,6 +92,7 @@
     <Compile Include="View\IRenderDialog.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Assets\beep.wav" />
     <Content Include="Assets\chip8ico.ico" />
     <Content Include="chip8ico.ico" />
   </ItemGroup>
