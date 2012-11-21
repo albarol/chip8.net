@@ -2,8 +2,10 @@
 {
     using System;
     using System.Drawing;
+    using System.Threading;
     using System.Windows.Forms;
 
+    using Chip8.Net.Assets;
     using Chip8.Net.Engine;
     using Chip8.Net.Presenter;
     using Chip8.Net.Settings;
@@ -50,6 +52,13 @@
             }
         }
 
+        protected override void OnClosed(EventArgs e)
+        {
+            this.virtualMachine.Stop();
+            Thread.Sleep(20);
+            base.OnClosed(e);
+        }
+
         private void FrmKeyUp(object sender, KeyEventArgs e)
         {
             char key = (char)e.KeyData;
@@ -62,12 +71,12 @@
             this.virtualMachine.Keyboard.PressKey(key);
         }
 
-        private void StmSmallGraphicsClick(object sender, System.EventArgs e)
+        private void StmSmallGraphicsClick(object sender, EventArgs e)
         {
             this.presenter.SetGraphics(Graphics.Small());
         }
 
-        private void StmExitClick(object sender, System.EventArgs e)
+        private void StmExitClick(object sender, EventArgs e)
         {
             Environment.Exit(0);
         }
@@ -81,7 +90,7 @@
         {
             var openDialog = new OpenFileDialog
             {
-                Filter = "ROM Files (*.rom)|*.rom"
+                Filter = AppResources.Settings_DialogFileType
             };
             openDialog.FileOk += (o, args) => this.presenter.InitializeRom(openDialog.FileName);
             openDialog.ShowDialog();
@@ -132,19 +141,19 @@
             if (this.virtualMachine.ProcessingStatus == ProcessingStatus.Paused)
             {
                 this.virtualMachine.Run();
-                this.stmPause.Text = "Pause";
+                this.stmPause.Text = AppResources.Settings_MenuPause;
             }
             else if(this.virtualMachine.ProcessingStatus == ProcessingStatus.Running)
             {
                 this.virtualMachine.Pause();
-                this.stmPause.Text = "Play";
+                this.stmPause.Text = AppResources.Settings_MenuPlay;
             }
         }
 
         private void StmDebuggerClick(object sender, EventArgs e)
         {
             this.virtualMachine.Pause();
-            this.stmPause.Text = "Play";
+            this.stmPause.Text = AppResources.Settings_MenuPlay;
             var debuggerDialog = new DebuggerDialog(this.virtualMachine);
             debuggerDialog.Show(this);
         }
