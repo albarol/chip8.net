@@ -33,7 +33,7 @@
         public override void DrawFrame()
         {
             var g = this.view.CreateGraphics();
-            
+
             for (int column = 0; column < Gpu.Height; column++)
             {
                 for (int row = 0; row < Gpu.Width; row++)

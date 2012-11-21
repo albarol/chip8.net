@@ -8,11 +8,13 @@
     public class Sound
     {
         private Audio audio;
+        private byte[] bufferAudio;
         
         public Sound()
         {
             this.Enabled = true;
             this.audio = new Audio();
+            this.bufferAudio = this.LoadAudio();
         }
 
         public int Timer { get; set; }
@@ -20,7 +22,8 @@
 
         public void Beep()
         {
-            using (var beepAudio = typeof(Sound).Assembly.GetManifestResourceStream("Chip8.Net.Assets.beep.wav"))
+            
+            using (var beepAudio = new MemoryStream(this.bufferAudio))
             {
                 this.audio.Play(beepAudio, AudioPlayMode.Background);    
             }
@@ -36,6 +39,18 @@
                 }
                 this.Timer -= 1;
             }
+        }
+
+
+        private byte[] LoadAudio()
+        {
+            byte[] buffer;
+            using (var reader = new BinaryReader(typeof(Sound).Assembly.GetManifestResourceStream("Chip8.Net.Assets.beep.wav")))
+            {
+                buffer = new byte[(int)reader.BaseStream.Length];
+                reader.Read(buffer, 0, buffer.Length);
+            }
+            return buffer;
         }
     }
 }

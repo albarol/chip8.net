@@ -23,7 +23,6 @@
             this.InitializeComponent();
             this.KeyDown += this.FrmKeyDown;
             this.KeyUp += this.FrmKeyUp;
-            
             this.virtualMachine = new VirtualMachine(new VideoRender(this.pbRender));
             this.presenter = new RenderPresenter(this, this.virtualMachine);
         }
