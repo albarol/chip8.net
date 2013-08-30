@@ -1,4 +1,6 @@
-﻿namespace Chip8.Net
+﻿#define MONO
+
+namespace Chip8.Net
 {
     using System;
     using System.Windows.Forms;
@@ -21,18 +23,9 @@
             {
                 System.Diagnostics.Process.Start(url);
             }
-            catch (System.ComponentModel.Win32Exception win32Exception)
+            catch
             {
-                try
-                {
-                    System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo("IExplore.exe", url);
-                    System.Diagnostics.Process.Start(startInfo);
-                    startInfo = null;
-                }
-                catch (Exception exception)
-                {
-                    MessageBox.Show(string.Format("See in website: {0}", url), "Chip-8.Net", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+                MessageBox.Show(string.Format("See in website: {0}", url), "Chip-8.Net", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
     }

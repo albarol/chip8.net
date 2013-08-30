@@ -8,12 +8,15 @@
     public class VideoRender : Gpu
     {
         private readonly PictureBox view;
+		BufferedGraphicsContext bufferContext;
+		BufferedGraphics buffer;
         private readonly Brush foreground;
         private readonly Brush background;
 
         public VideoRender(PictureBox view)
         {
             this.view = view;
+			this.bufferContext = BufferedGraphicsManager.Current;
             this.foreground = new SolidBrush(Color.White);
             this.background = new SolidBrush(Color.Black);
         }
@@ -32,22 +35,16 @@
         
         public override void DrawFrame()
         {
-            var g = this.view.CreateGraphics();
-
-            for (int column = 0; column < Gpu.Height; column++)
+            this.buffer = bufferContext.Allocate(this.view.CreateGraphics(), this.view.DisplayRectangle);
+			for (int column = 0; column < Gpu.Height; column++)
             {
                 for (int row = 0; row < Gpu.Width; row++)
                 {
-                    if (this.Gfx[row, column] == 0x0)
-                    {
-                        g.FillRectangle(this.background, row * this.PixelSize, column * this.PixelSize, this.PixelSize, this.PixelSize);
-                    }
-                    else
-                    {
-                        g.FillRectangle(this.foreground, row * this.PixelSize, column * this.PixelSize, this.PixelSize, this.PixelSize);
-                    }
+					Brush currentBrush = (this.Gfx[row, column] == 0x0) ? background : foreground;
+					this.buffer.Graphics.FillRectangle(currentBrush, row * this.PixelSize, column * this.PixelSize, this.PixelSize, this.PixelSize);
                 }
             }
+			this.buffer.Render();
         }
     }
 }

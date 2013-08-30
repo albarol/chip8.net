@@ -51,144 +51,112 @@
             this.Sound.Update();
         }
 
-        private void InterpretOpcode(Instruction instruction)
-        {
-            if (instruction.Opcode == Opcodes.ClearScreen)
-            {
-                this.Gpu.Clear();
-            }
-            else if (instruction.Opcode == Opcodes.ReturnRoutine)
-            {
-                this.ReturnRoutine();
-            }
-            else if (instruction.Opcode == Opcodes.JumpTo)
-            {
-                this.JumpTo(instruction);
-            }
-            else if (instruction.Opcode == Opcodes.CallRoutine)
-            {
-                this.CallRoutine(instruction);
-            }
-            else if (instruction.Opcode == Opcodes.SkipNextRegisterVxEqualAddress)
-            {
-                this.SkipNextRegisterVxEqualAddress(instruction);
-            }
-            else if (instruction.Opcode == Opcodes.SkipNextRegisterVxNotEqualAddress)
-            {
-                this.SkipNextRegisterVxNotEqualAddress(instruction);
-            }
-            else if (instruction.Opcode == Opcodes.SkipNextRegisterVxEqualVy)
-            {
-                this.SkipNextRegisterVxEqualVy(instruction);
-            }
-            else if (instruction.Opcode == Opcodes.SetVxToNn)
-            {
-                this.SetVxToNn(instruction);
-            }
-            else if (instruction.Opcode == Opcodes.AddNnToVx)
-            {
-                this.AddNnToVx(instruction);
-            }
-            else if (instruction.Opcode == Opcodes.SetVxToVy)
-            {
-                this.SetVxToVy(instruction);
-            }
-            else if (instruction.Opcode == Opcodes.SetVxToVxOrVy)
-            {
-                this.SetVxToVxOrVy(instruction);
-            }
-            else if (instruction.Opcode == Opcodes.SetVxToVxAndVy)
-            {
-                this.SetVxToVxAndVy(instruction);
-            }
-            else if (instruction.Opcode == Opcodes.SetVxToVxXorVy)
-            {
-                this.SetVxToVxXorVy(instruction);
-            }
-            else if (instruction.Opcode == Opcodes.AddVyToVx)
-            {
-                this.AddVyToVx(instruction);
-            }
-            else if (instruction.Opcode == Opcodes.SubtractVyFromVx)
-            {
-                this.SubtractVyToVx(instruction);
-            }
-            else if (instruction.Opcode == Opcodes.ShiftVxRightByOne)
-            {
-                this.ShiftVxRightByOne(instruction);
-            }
-            else if (instruction.Opcode == Opcodes.SetVxToVyMinusVx)
-            {
-                this.SetVxToVyMinusVx(instruction);
-            }
-            else if (instruction.Opcode == Opcodes.ShiftVxLeftByOne)
-            {
-                this.ShiftVxLeftByOne(instruction);
-            }
-            else if (instruction.Opcode == Opcodes.SkipNextRegisterVxNotEqualVy)
-            {
-                this.SkipNextRegisterVxNotEqualVy(instruction);
-            }
-            else if (instruction.Opcode == Opcodes.SetIToAddressNnn)
-            {
-                this.SetIToAddressNnn(instruction);
-            }
-            else if (instruction.Opcode == Opcodes.JumpToPlusV0)
-            {
-                this.JumpToPlusV0(instruction);
-            }
-            else if (instruction.Opcode == Opcodes.SetVxRandomNumberAndNn)
-            {
-                this.SetVxRandomNumberAndNn(instruction);
-            }
-            else if (instruction.Opcode == Opcodes.DrawSprite)
-            {
-                this.DrawSprite(instruction);
-            }
-            else if (instruction.Opcode == Opcodes.SkipIfKeyInVxPressed)
-            {
-                this.SkipIfKeyInVxPressed(instruction);
-            }
-            else if (instruction.Opcode == Opcodes.SkipIfKeyInVxNotPressed)
-            {
-                this.SkipIfKeyInVxNotPressed(instruction);
-            }
-            else if (instruction.Opcode == Opcodes.SetVxToDelayTimer)
-            {
-                this.SetVxToDelayTimer(instruction);
-            }
-            else if (instruction.Opcode == Opcodes.StoreWaitingKeyInVx)
-            {
-                this.StoreWaitingKeyInVx(instruction);
-            }
-            else if (instruction.Opcode == Opcodes.SetDelayTimerToVx)
-            {
-                this.SetDelayTimerToVx(instruction);
-            }
-            else if (instruction.Opcode == Opcodes.SetSoundTimerToVx)
-            {
-                this.SetSoundTimerToVx(instruction);
-            }
-            else if (instruction.Opcode == Opcodes.AddVxToI)
-            {
-                this.AddVxToI(instruction);
-            }
-            else if (instruction.Opcode == Opcodes.SetIToCharacterVx)
-            {
-                this.SetIToCharacterVx(instruction);
-            }
-            else if (instruction.Opcode == Opcodes.StoreInVxDecimalRegisterI)
-            {
-                this.StoreInVxDecimalRegisterI(instruction);
-            }
-            else if (instruction.Opcode == Opcodes.StoreV0ToVx)
-            {
-                this.StoreV0ToVx(instruction);
-            }
-            else if (instruction.Opcode == Opcodes.FillV0ToVxFromMemory)
-            {
-                this.FillV0ToVxFromMemory(instruction);
-            }
+        private void InterpretOpcode (Instruction instruction)
+		{
+			switch (instruction.Opcode) {
+			case Opcodes.CLS:
+				this.Gpu.Clear ();
+				break;
+			case Opcodes.RET:
+				this.ReturnRoutine ();
+				break;
+			case Opcodes.JP:
+				this.JumpTo (instruction);
+				break;
+			case Opcodes.CALL:
+				this.CallRoutine (instruction);
+				break;
+			case Opcodes.SE:
+				this.SkipNextRegisterVxEqualAddress (instruction);
+				break;
+			case Opcodes.SNE:
+				SkipNextRegisterVxNotEqualAddress (instruction);
+				break;
+			case Opcodes.SER:
+				SkipNextRegisterVxEqualVy (instruction);
+				break;
+			case Opcodes.SETB:
+				SetVxToNn (instruction);
+				break;
+			case Opcodes.ADD:
+				AddNnToVx (instruction);
+				break;
+			case Opcodes.SET:
+				SetVxToVy (instruction);
+				break;
+			case Opcodes.OR:
+				SetVxToVxOrVy (instruction);
+				break;
+			case Opcodes.AND:
+				SetVxToVxAndVy (instruction);
+				break;
+			case Opcodes.XOR:
+				SetVxToVxXorVy (instruction);
+				break;
+			case Opcodes.ADDR:
+				AddVyToVx (instruction);
+				break;
+			case Opcodes.SUB:
+				SubtractVyToVx (instruction);
+				break;
+			case Opcodes.SHR:
+				ShiftVxRightByOne (instruction);
+				break;
+			case Opcodes.SUBN:
+				SetVxToVyMinusVx (instruction);
+				break;
+			case Opcodes.SHL:
+				ShiftVxLeftByOne (instruction);
+				break;
+			case Opcodes.SNER:
+				SkipNextRegisterVxNotEqualVy (instruction);
+				break;
+			case Opcodes.SETI:
+				SetIToAddressNnn (instruction);
+				break;
+			case Opcodes.JPR:
+				JumpToPlusV0 (instruction);
+				break;
+			case Opcodes.RND:
+				SetVxRandomNumberAndNn (instruction);
+				break;
+			case Opcodes.DRW:
+				DrawSprite (instruction);
+				break;
+			case Opcodes.SKP:
+				SkipIfKeyInVxPressed (instruction);
+				break;
+			case Opcodes.SKPN:
+				SkipIfKeyInVxNotPressed (instruction);
+				break;
+			case Opcodes.DT:
+				SetVxToDelayTimer (instruction);
+				break;
+			case Opcodes.KEY:
+				StoreWaitingKeyInVx (instruction);
+				break;
+			case Opcodes.DTR:
+				SetDelayTimerToVx (instruction);
+				break;
+			case Opcodes.ST:
+				SetSoundTimerToVx (instruction);
+				break;
+			case Opcodes.ADDI:
+				AddVxToI (instruction);
+				break;
+			case Opcodes.LDI:
+				SetIToCharacterVx (instruction);
+				break;
+			case Opcodes.LDB:
+				StoreInVxDecimalRegisterI (instruction);
+				break;
+			case Opcodes.STR:
+				StoreV0ToVx (instruction);
+				break;
+			case Opcodes.FILL:
+				FillV0ToVxFromMemory (instruction);
+				break;
+			}
         }
 
         private void ReturnRoutine()

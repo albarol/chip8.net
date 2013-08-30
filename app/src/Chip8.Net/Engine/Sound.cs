@@ -11,7 +11,8 @@
         public Sound()
         {
             this.Enabled = true;
-            this.LoadAudio();
+            this.bufferAudio = this.LoadAudio();
+			this.audio = new SoundPlayer(new MemoryStream(this.bufferAudio));
         }
 
         public int Timer { get; set; }
@@ -20,6 +21,7 @@
         public void Beep()
         {
 			this.audio.Play();
+			this.audio.Stop();
         }
 
         public void Update()
@@ -43,10 +45,7 @@
                 buffer = new byte[(int)reader.BaseStream.Length];
                 reader.Read(buffer, 0, buffer.Length);
             }
-			using (var beepAudio = new MemoryStream(buffer))
-            {
-				this.audio = new SoundPlayer(beepAudio);
-            }
+			return buffer;
         }
     }
 }

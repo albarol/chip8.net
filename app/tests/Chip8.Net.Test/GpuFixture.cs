@@ -28,8 +28,8 @@
             int x = 0, y = 0;
 
             // Act:
-            this.gpu.Draw(x, y, sprite);
-            this.gpu.DrawFrame();
+            this.processor.Gpu.Draw(x, y, sprite);
+            this.processor.Gpu.DrawFrame();
         }
 
         [Test]
@@ -39,7 +39,8 @@
             char[] mapping = new[] { '1', '2', '3', '4', 'Q', 'W', 'E', 'R', 'A', 'S', 'D', 'F', 'Z', 'X', 'C', 'V' };
             foreach(char i in mapping)
             {
-                Console.WriteLine((int)i);
+                
+				Console.WriteLine((int)i);
             }
         }
     }
