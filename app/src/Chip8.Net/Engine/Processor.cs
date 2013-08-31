@@ -311,7 +311,7 @@
             {
                 sprite[count++] = this.Memory[index];
             }
-            this.RegisterV[Carry] = (byte)this.Gpu.Draw(this.RegisterV[instruction.X], this.RegisterV[instruction.Y], sprite);
+            this.RegisterV[Carry] = this.Gpu.Draw(this.RegisterV[instruction.X], this.RegisterV[instruction.Y], sprite);
             this.Gpu.DrawFrame();
         }
 

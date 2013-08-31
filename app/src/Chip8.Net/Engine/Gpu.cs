@@ -8,11 +8,11 @@
         protected const int Height = 32;
         protected readonly int[,] Gfx = new int[Width, Height];
 
-        public int Draw(int x, int y, int[] sprite)
+        public byte Draw(int x, int y, int[] sprite)
         {
             int positionY = y;
             int positionX = x;
-            int carry = 0x0;
+            byte carry = 0x0;
 
             for (int i = 0; i < sprite.Length; i++)
             {

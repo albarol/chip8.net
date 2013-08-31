@@ -17,7 +17,7 @@
         {
             this.view = view;
 			this.bufferContext = BufferedGraphicsManager.Current;
-            this.foreground = new SolidBrush(Color.White);
+            this.foreground = new SolidBrush(Color.ForestGreen);
             this.background = new SolidBrush(Color.Black);
         }
 
