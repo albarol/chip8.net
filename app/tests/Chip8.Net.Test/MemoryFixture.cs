@@ -43,6 +43,9 @@
             
             // Act
             var item = this.processor.Memory[Position];
+
+			// Assert:
+			item.Should().Be.Equals(0x000);
         }
     }
 }
